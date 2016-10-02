@@ -1,0 +1,12 @@
+extends index.pug
+
+block body
+  form(action="/login",method="post")
+    div
+      lable Username
+      input(type='text', name="username")
+    div
+      labe Passwort
+      input(type='password', name="password")
+    div
+      input(type="submit", value="submit")

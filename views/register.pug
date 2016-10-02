@@ -1,0 +1,16 @@
+extends index.pug
+
+block body
+  h3=info
+  form(action="/register",method="post")
+    div
+      lable e-mail
+      input(type='text', name="email")
+    div
+      lable Username
+      input(type='text', name="username")
+    div
+      labe Passwort
+      input(type='password', name="password")
+    div
+      input(type="submit", value="submit")
