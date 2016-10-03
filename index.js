@@ -1,5 +1,6 @@
 var express = require('express');
 var session = require('express-session');
+var flash = require('connect-flash');
 var app = express();
 const port = 3000; //port to listen on
 var debugMode = 1; //boolean to enable debugmode
@@ -75,7 +76,7 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(id, cb) {
-    db.users.findById(id, function(err, user) {
+    Users.findById(id, function(err, user) {
         if (err) {
             return cb(err);
         }
@@ -83,40 +84,48 @@ passport.deserializeUser(function(id, cb) {
     });
 });
 app.set('view engine', 'pug');
+app.use(flash());
 app.use(bodyParser());
 app.use(session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            secure: true
-        }
-    }))
-    // Initialize Passport and restore authentication state, if any, from the
-    // session.
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false
+    }
+}));
+// Initialize Passport and restore authentication state, if any, from the
+// session.
 app.use(passport.initialize());
 app.use(passport.session());
+
+function isLoggedIn(req) {
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated()) return true;
+    //else return false
+    return false;
+};
 
 // Define routes.
 app.get('/',
     function(req, res) {
-        res.render('index');
+        if (isLoggedIn) res.render('index');
+
+        res.redirect("/nope");
     });
 
 app.get('/login',
     function(req, res) {
+        if (isLoggedIn) res.redirect("/");
         res.render('login');
     });
 
 app.post('/login',
     passport.authenticate('local', {
-        session: true,
-        failureRedirect: '/login'
-    }),
-    function(req, res) {
-        res.session();
-        res.render("index");
-    }
+        failureRedirect: '/login',
+        successRedirect: '/',
+        failureFlash: true // allow flash messages
+    })
 );
 
 app.post('/register',
@@ -150,8 +159,10 @@ app.post('/register',
             });
         })
     });
+
 app.get('/register',
     function(req, res) {
+      if(isLoggedIn) res.redirect("/");
         res.render('register');
     });
 app.get('/logout',
