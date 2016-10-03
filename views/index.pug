@@ -4,8 +4,14 @@ html
     script(src='js/client.js')
     style(src='css/style.css')
   block debug
-  
-  block body
+  body
+    section
+      article
+        -
+        if isNotLoggedin
+        else
+          a(href="/logout", id="logoutbutton") Logout
+    block body
 
   footer
     p by @spralexx

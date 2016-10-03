@@ -124,8 +124,8 @@ app.use(passport.session());
 app.get('/',
     function(req, res) {
         if (req.isAuthenticated()) {
-          debugLog(new Date());
-          debugLog(req.session);
+            debugLog(new Date());
+            debugLog(req.session);
             res.render('index');
         } else {
             res.redirect("/login");
@@ -138,9 +138,19 @@ app.get('/login',
         if (req.isAuthenticated()) {
             res.redirect("/");
         } else {
-            res.render('login');
+            res.render('login', {isNotLoggedin:true});
         }
     });
+
+
+app.get('/logout',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+          req.logOut();
+        }
+        res.redirect("/login");
+    });
+
 
 app.post('/login',
     passport.authenticate('local', {
@@ -179,7 +189,7 @@ app.post('/register',
                         'password': hash,
                         'salt': salt
                     });
-                    initState=false;
+                    initState = false;
                 } else {
                     mongoose.connection.collection("userInfo").insert({
                         'email': req.body.email,
@@ -200,7 +210,7 @@ app.get('/register',
         if (req.isAuthenticated()) {
             res.redirect("/");
         } else {
-            res.render('register');
+            res.render('register', {isNotLoggedin:true});
         }
     });
 app.get('/logout',
