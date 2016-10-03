@@ -7,12 +7,10 @@ var debugMode = 1; //boolean to enable debugmode
 debugLog("debuglog Enabled");
 var bodyParser = require('body-parser');
 var passwordjs = require('./helpers/password')
+var mongoose = require('mongoose');
+var wachplanjs = require("./helpers/wachplan")
 var initState = true;
 
-
-var mongoose = require('mongoose');
-
-mongoose.connect("mongodb://127.0.0.1/Users");
 
 var LocalUserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -22,8 +20,8 @@ var LocalUserSchema = new mongoose.Schema({
     password: String,
     salt: Buffer
 });
-
-var Users = mongoose.model('userInfo', LocalUserSchema, 'userInfo');
+var dbconn = mongoose.createConnection("mongodb://127.0.0.1/Users"),
+    Users = dbconn.model('userInfo', LocalUserSchema, 'userInfo');
 
 Users.findOne({
     'isadmin': true
@@ -103,6 +101,7 @@ passport.deserializeUser(function(id, cb) {
     });
 });
 app.set('view engine', 'pug');
+app.use(express.static('public'));
 app.use(flash());
 app.use(bodyParser());
 app.use(session({
@@ -118,6 +117,7 @@ app.use(session({
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 
 // Define routes.
@@ -138,6 +138,19 @@ app.get('/',
         }
     });
 
+app.get('/wachplandata',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            var now = new Date();
+
+            var wachplandata = wachplanjs.getWachplanData(now.getFullYear(), function(data){
+              res.send({data:data});
+            });
+        } else {
+            res.redirect("/login");
+        };
+    });
+
 app.get('/login',
     function(req, res) {
         if (req.isAuthenticated()) {
@@ -156,6 +169,19 @@ app.get('/logout',
             req.logOut();
         }
         res.redirect("/login");
+    });
+
+app.post('/createwachtage',
+    function(req, res) {
+        if (req.isAuthenticated() && req.user.isadmin) {
+            if (req.body.enddate && req.body.startdate && req.body.personcount) {
+                wachplanjs.createWachtag(req.body.startdate, req.body.enddate, req.body.personcount);
+            } else if (req.body.startdate && req.body.personcount) {
+                wachplanjs.createWachtag(req.body.startdate, req.body.personcount);
+            }
+        } else {
+            res.redirect("/login");
+        };
     });
 
 
@@ -189,7 +215,7 @@ app.post('/register',
                     return;
                 }
                 if (initState) {
-                    mongoose.connection.collection("userInfo").insert({
+                    dbconn.collection("userInfo").insert({
                         'email': req.body.email,
                         'name': username,
                         'isadmin': true,
@@ -198,7 +224,7 @@ app.post('/register',
                     });
                     initState = false;
                 } else {
-                    mongoose.connection.collection("userInfo").insert({
+                    dbconn.collection("userInfo").insert({
                         'email': req.body.email,
                         'name': username,
                         'isadmin': false,

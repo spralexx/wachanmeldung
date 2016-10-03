@@ -1,0 +1,13 @@
+article(id="adminContent")
+  script(src="js/adminContent.js")
+  section(id="createNewWache")
+    form(action="/createwachtage" method="post")
+      lable Starttag
+      input(type="text" id="startdatepicker" name="startdate")
+      lable Endtag
+      input(type="text" id="enddatepicker" name="enddate")
+      lable Personenanzahl
+      input(type="number" name="personcount" min="1" max="7")
+      input(type="submit" value="Anlegen")
+    
+      

@@ -1,7 +1,7 @@
 var debugMode=1; //boolean to enable debugmode
 
 function main(){
-  debugLog("loaded client js");
+  debugLog("loaded client.js");
 }
 
 
@@ -11,4 +11,4 @@ function debugLog(msg){
   }
 }
 
-window.addEventlistener("load", main);
+window.addEventListener("load", main);

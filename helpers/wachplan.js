@@ -2,7 +2,6 @@
 var exports = module.exports = {};
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1/Wache");
 
 var Wachtag = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -15,7 +14,8 @@ var Wachtag = new mongoose.Schema({
     }
 });
 
-//var Wachtage = mongoose.model('userInfo', LocalUserSchema, 'userInfo');
+var Wache = mongoose.createConnection("mongodb://127.0.0.1/Wache");
+
 exports.createWachtag = function(date, teamSize) {
     var now = new Date();
     if (date < now) {
@@ -29,24 +29,38 @@ exports.createWachtag = function(date1, date2, teamSize) {
     if (date1 < now || date2 < now) {
         console.log("Das Datum liegt in der Vergangenheit!");
     } else {
-        if (date1 < data2) {
-            var dateArray = getDates(date1, date2);
+        if (date1 < date2) {
+            var dateArray = getDates(new Date(date1), new Date(date2));
+            console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
+                console.log(current);
                 writeToDB(current, teamSize);
             });
         }
     }
 }
 
+exports.getWachplanData = function(year,cb) {
+  var Wachtage = Wache.model("year"+year, Wachtag, "year"+year);
+  console.log("year"+year);
+    Wachtage.find({}, function(err, data) {
+      console.log("data: "+data);
+        cb(data);
+    })
+}
+
 function writeToDB(date, teamSize) {
-    var newWachtag = new Wachtag({
-        date: date,
-        teamSize: teamSize
-    });
-    newWachtag.save(function(err, newWachtag) {
-        if (err) return console.error(err);
-        console.log("Neuer Wachtag wurde angelegt:\n" + newWachtag);
-    });
+    Wache.collection("year"+String(date.getFullYear())).insert(
+
+        {
+            date: date,
+            teamSize: teamSize,
+            teamMember: [],
+            meal: {
+                name: null,
+                admin: null
+            }
+        });
 }
 
 Date.prototype.addDays = function(days) {
