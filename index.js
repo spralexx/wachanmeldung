@@ -110,7 +110,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false
+        secure: false,
+        maxAge: 3600000
     }
 }));
 // Initialize Passport and restore authentication state, if any, from the
@@ -123,9 +124,11 @@ app.use(passport.session());
 app.get('/',
     function(req, res) {
         if (req.isAuthenticated()) {
+          debugLog(new Date());
+          debugLog(req.session);
             res.render('index');
         } else {
-            res.redirect("/nope");
+            res.redirect("/login");
 
         }
     });
