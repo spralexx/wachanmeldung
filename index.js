@@ -143,8 +143,24 @@ app.get('/wachplandata',
         if (req.isAuthenticated()) {
             var now = new Date();
 
-            var wachplandata = wachplanjs.getWachplanData(now.getFullYear(), function(data){
-              res.send({data:data});
+            var wachplandata = wachplanjs.getWachplanData(now.getFullYear(), function(data) {
+                var dataArray = new Array();
+                data.forEach(function(current, index) {
+                    dataArray.push({
+                        "id": index + 1,
+                        "name": "Wachtag",
+                        "startdate": current.date,
+                        "enddate": "",
+                        "starttime": "10:00",
+                        "endtime": "18:00",
+                        "color": "blue",
+                        "url": ""
+                    })
+                })
+                dataJson = JSON.stringify(dataArray);
+                dataJson={"monthly":JSON.parse(dataJson)}
+                debugLog(dataJson);
+                res.send(dataJson);
             });
         } else {
             res.redirect("/login");
@@ -174,11 +190,10 @@ app.get('/logout',
 app.post('/createwachtage',
     function(req, res) {
         if (req.isAuthenticated() && req.user.isadmin) {
-            if (req.body.enddate && req.body.startdate && req.body.personcount) {
-                wachplanjs.createWachtag(req.body.startdate, req.body.enddate, req.body.personcount);
-            } else if (req.body.startdate && req.body.personcount) {
-                wachplanjs.createWachtag(req.body.startdate, req.body.personcount);
+            if (req.body.enddate && req.body.startdate) {
+                wachplanjs.createWachtag(req.body.startdate, req.body.enddate);
             }
+            res.redirect("/");
         } else {
             res.redirect("/login");
         };

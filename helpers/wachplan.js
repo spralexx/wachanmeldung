@@ -6,8 +6,14 @@ var mongoose = require("mongoose");
 var Wachtag = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     date: Date,
-    teamSize: Number,
-    teamMember: [mongoose.Schema.Types.ObjectId],
+    team: {
+        wl: mongoose.Schema.Types.ObjectId,
+        bf: mongoose.Schema.Types.ObjectId,
+        wg0: mongoose.Schema.Types.ObjectId,
+        wg1: mongoose.Schema.Types.ObjectId,
+        wh0: mongoose.Schema.Types.ObjectId,
+        wh1: mongoose.Schema.Types.ObjectId
+    },
     meal: {
         name: String,
         admin: mongoose.Schema.Types.ObjectId
@@ -16,15 +22,7 @@ var Wachtag = new mongoose.Schema({
 
 var Wache = mongoose.createConnection("mongodb://127.0.0.1/Wache");
 
-exports.createWachtag = function(date, teamSize) {
-    var now = new Date();
-    if (date < now) {
-        console.log("Das Datum liegt in der Vergangenheit!");
-    } else {
-        writeToDB(date, teamSize);
-    }
-}
-exports.createWachtag = function(date1, date2, teamSize) {
+exports.createWachtag = function(date1, date2) {
     var now = new Date();
     if (date1 < now || date2 < now) {
         console.log("Das Datum liegt in der Vergangenheit!");
@@ -34,28 +32,34 @@ exports.createWachtag = function(date1, date2, teamSize) {
             console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
                 console.log(current);
-                writeToDB(current, teamSize);
+                writeToDB(current);
             });
         }
     }
 }
 
-exports.getWachplanData = function(year,cb) {
-  var Wachtage = Wache.model("year"+year, Wachtag, "year"+year);
-  console.log("year"+year);
+exports.getWachplanData = function(year, cb) {
+    var Wachtage = Wache.model("year" + year, Wachtag, "year" + year);
+    console.log("year" + year);
     Wachtage.find({}, function(err, data) {
-      console.log("data: "+data);
+        console.log("data: " + data);
         cb(data);
     })
 }
 
-function writeToDB(date, teamSize) {
-    Wache.collection("year"+String(date.getFullYear())).insert(
+function writeToDB(date) {
+    Wache.collection("year" + String(date.getFullYear())).insert(
 
         {
             date: date,
-            teamSize: teamSize,
-            teamMember: [],
+            team: {
+                wl: null,
+                bf: null,
+                wg0: null,
+                wg1: null,
+                wh0: null,
+                wh1: null
+            },
             meal: {
                 name: null,
                 admin: null
