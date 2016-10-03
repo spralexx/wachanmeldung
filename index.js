@@ -99,25 +99,25 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-function isLoggedIn(req) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated()) return true;
-    //else return false
-    return false;
-};
 
 // Define routes.
 app.get('/',
     function(req, res) {
-        if (isLoggedIn) res.render('index');
+        if (req.isAuthenticated()) {
+            res.render('index');
+        } else {
+            res.redirect("/nope");
 
-        res.redirect("/nope");
+        }
     });
 
 app.get('/login',
     function(req, res) {
-        if (isLoggedIn) res.redirect("/");
-        res.render('login');
+        if (req.isAuthenticated()) {
+            res.redirect("/");
+        } else {
+            res.render('login');
+        }
     });
 
 app.post('/login',
@@ -162,8 +162,11 @@ app.post('/register',
 
 app.get('/register',
     function(req, res) {
-      if(isLoggedIn) res.redirect("/");
-        res.render('register');
+        if (req.isAuthenticated()) {
+            res.redirect("/");
+        } else {
+            res.render('register');
+        }
     });
 app.get('/logout',
     function(req, res) {
