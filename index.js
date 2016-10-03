@@ -7,20 +7,39 @@ var debugMode = 1; //boolean to enable debugmode
 debugLog("debuglog Enabled");
 var bodyParser = require('body-parser');
 var passwordjs = require('./helpers/password')
+var initState = true;
 
 
 var mongoose = require('mongoose');
 
 mongoose.connect("mongodb://127.0.0.1/Users");
+
 var LocalUserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     email: String,
     name: String,
+    isadmin: Boolean,
     password: String,
     salt: Buffer
 });
 
 var Users = mongoose.model('userInfo', LocalUserSchema, 'userInfo');
+
+Users.findOne({
+    'isadmin': true
+}, function(err, user) {
+    //console.log(user);
+    if (err) {
+        debugLog("Error: " + err);
+    }
+    if (!user) {
+        debugLog("no admin found! so initState=true");
+        initState = true;
+        return;
+    }
+    initState = false;
+});
+
 
 //require packages for authentication
 var passport = require('passport');
@@ -149,12 +168,25 @@ app.post('/register',
                     debugLog(err);
                     return;
                 }
-                mongoose.connection.collection("userInfo").insert({
-                    'email': req.body.email,
-                    'name': username,
-                    'password': hash,
-                    'salt': salt
-                })
+                if (initState) {
+                    mongoose.connection.collection("userInfo").insert({
+                        'email': req.body.email,
+                        'name': username,
+                        'isadmin': true,
+                        'password': hash,
+                        'salt': salt
+                    });
+                    initState=false;
+                } else {
+                    mongoose.connection.collection("userInfo").insert({
+                        'email': req.body.email,
+                        'name': username,
+                        'isadmin': false,
+                        'password': hash,
+                        'salt': salt
+                    })
+
+                }
                 res.redirect("/login");
             });
         })
