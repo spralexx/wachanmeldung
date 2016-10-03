@@ -6,11 +6,11 @@ html
   block debug
   body
     section
-      article
+      article(id="logout")
         -
         if isNotLoggedin
         else
-          a(href="/logout", id="logoutbutton") Logout
+          a(href="/logout") Logout
     block body
 
   footer

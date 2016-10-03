@@ -46,7 +46,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(function(username, password, done) {
-    debugLog("Username: " + username + ", Passwort: " + password);
+    //debugLog("Username: " + username + ", Passwort: " + password);
     Users.findOne({
         'name': username
     }, function(err, user) {
@@ -62,14 +62,14 @@ passport.use(new LocalStrategy(function(username, password, done) {
             });
         }
 
-        debugLog("User.salt: " + user.salt);
+        //debugLog("User.salt: " + user.salt);
 
         passwordjs.hash(password, user.salt, function(err, hash) {
             if (err) {
                 debugLog("Error: " + err);
                 return done(err);
             }
-            debugLog("Hashes: " + hash + "\n" + user.password);
+            //debugLog("Hashes: " + hash + "\n" + user.password);
             if (hash == user.password) {
                 return done(null, user);
             }
@@ -124,9 +124,14 @@ app.use(passport.session());
 app.get('/',
     function(req, res) {
         if (req.isAuthenticated()) {
-            debugLog(new Date());
-            debugLog(req.session);
-            res.render('index');
+            //debugLog(new Date());
+            switch (req.user.isadmin) {
+                case true:
+                    res.render("admin");
+                    break;
+                default:
+                    res.render("index");
+            }
         } else {
             res.redirect("/login");
 
@@ -138,7 +143,9 @@ app.get('/login',
         if (req.isAuthenticated()) {
             res.redirect("/");
         } else {
-            res.render('login', {isNotLoggedin:true});
+            res.render('login', {
+                isNotLoggedin: true
+            });
         }
     });
 
@@ -146,7 +153,7 @@ app.get('/login',
 app.get('/logout',
     function(req, res) {
         if (req.isAuthenticated()) {
-          req.logOut();
+            req.logOut();
         }
         res.redirect("/login");
     });
@@ -210,7 +217,9 @@ app.get('/register',
         if (req.isAuthenticated()) {
             res.redirect("/");
         } else {
-            res.render('register', {isNotLoggedin:true});
+            res.render('register', {
+                isNotLoggedin: true
+            });
         }
     });
 app.get('/logout',
