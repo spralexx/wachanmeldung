@@ -9,6 +9,29 @@
 	position: relative;
 }
 
+.wachleiter{
+	background-color: green;
+	color:white;
+	height: auto;
+}
+
+.bootsfuehrer{
+	background-color: orange;
+	color:white;
+	height: auto;
+
+}
+.wachgaenger{
+	background-color: darkgray;
+	color:white;
+	height: auto;
+}
+.wachhelfer{
+	background-color: white;
+	color:black;
+	height: auto;
+}
+
 /* Top bar containing title, navigation, and buttons */
 .monthly-header {
 	position: relative;
@@ -398,7 +421,7 @@
 		display: block;
 		margin: 0 0 1px 0;
 		width: auto;
-		height:20px;
+		height:auto;
 		font-size: 10px;
 		padding: 4px;
 		border-radius:0;

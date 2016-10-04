@@ -51,7 +51,7 @@ function writeToDB(date) {
     Wache.collection("year" + String(date.getFullYear())).insert(
 
         {
-            date: date,
+            date: date.addDays(1),
             team: {
                 wl: null,
                 bf: null,

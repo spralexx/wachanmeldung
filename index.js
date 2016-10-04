@@ -154,12 +154,18 @@ app.get('/wachplandata',
                         "starttime": "10:00",
                         "endtime": "18:00",
                         "color": "blue",
-                        "url": ""
+                        "url": "",
+                        "wl":current.team.wl,
+                        "bf":current.team.bf,
+                        "wg0":current.team.wg0,
+                        "wg1":current.team.wg1,
+                        "wh0":current.team.wh0,
+                        "wh1":current.team.wh1
                     })
                 })
                 dataJson = JSON.stringify(dataArray);
                 dataJson={"monthly":JSON.parse(dataJson)}
-                debugLog(dataJson);
+                //debugLog(dataJson);
                 res.send(dataJson);
             });
         } else {

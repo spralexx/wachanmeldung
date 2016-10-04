@@ -174,6 +174,12 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 						endDay = parseInt(endArr[2], 10),
 						eventURL = options.dataType == 'xml' ? $(event).find('url').text() : event.url,
 						eventTitle = options.dataType == 'xml' ? $(event).find('name').text() : event.name,
+						eventWl = options.dataType == 'xml' ? $(event).find('wl').text() : event.wl,
+						eventBf = options.dataType == 'xml' ? $(event).find('bf').text() : event.bf,
+						eventWg0 = options.dataType == 'xml' ? $(event).find('wg0').text() : event.wg0,
+						eventWg1 = options.dataType == 'xml' ? $(event).find('wg1').text() : event.wg1,
+						eventWh0 = options.dataType == 'xml' ? $(event).find('wh0').text() : event.wh0,
+						eventWh1 = options.dataType == 'xml' ? $(event).find('wh1').text() : event.wh1,
 						eventColor = options.dataType == 'xml' ? $(event).find('color').text() : event.color,
 						eventId = options.dataType == 'xml' ? $(event).find('id').text() : event.id,
 						startTime = options.dataType == 'xml' ? $(event).find('starttime').text() : event.starttime,
@@ -223,7 +229,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					// If event is one day & within month
 					if (!fullendDate && startMonth == setMonth && startYear == setYear) {
 						// Add Indicators
-						$('#'+uniqueId+' *[data-number="'+startDay+'"] .monthly-indicator-wrap').append('<div class="monthly-event-indicator"  data-eventid="'+ eventId +'" style="background:'+eventColor+'" title="'+eventTitle+'">'+eventTitle+'</div>');
+						$('#'+uniqueId+' *[data-number="'+startDay+'"] .monthly-indicator-wrap').append('<div class="monthly-event-indicator"  data-eventid="'+ eventId +'" style="background:'+eventColor+'" title="'+eventTitle+'">'+eventTitle+'<div class="wachleiter">WL:'+eventWl+'</div>'+'<div class="bootsfuehrer">BF:'+eventBf+'</div>'+'<div class="wachgaenger">WG:'+eventWg0+'</div>'+'<div class="wachgaenger">WG:'+eventWg1+'</div>'+'<div class="wachhelfer">WH:'+eventWh0+'</div>'+'<div class="wachhelfer">WH:'+eventWh1+'</div>'+'</div>');
 						// Print out event list for single day event
 						var timeHtml = '';
 						if (startTime){
