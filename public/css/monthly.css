@@ -408,7 +408,7 @@
 		padding-top: 20px;
 	}
 	.monthly-day-event:before {
-		padding-top: 77%;
+		padding-top: 50%;
 	}
 	.monthly-day-event > .monthly-indicator-wrap {
 		width:auto;

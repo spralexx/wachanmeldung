@@ -124,7 +124,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 			if (setMonth == currentMonth && setYear == currentYear) {
 				$('#' + uniqueId + ' .monthly-header-title-date').html(monthNames[m - 1] +' '+ y);
 			} else {
-				$('#' + uniqueId + ' .monthly-header-title').html('<a href="#" class="monthly-header-title-date"  onclick="return false">'+monthNames[m - 1] +' '+ y +'</a><a href="#" class="monthly-reset" title="Set to today">↻ TODAY</a> ');
+				$('#' + uniqueId + ' .monthly-header-title').html('<a href="#" class="monthly-header-title-date"  onclick="return false">'+monthNames[m - 1] +' '+ y +'</a><a href="#" class="monthly-reset" title="Set to today">↻ HEUTE</a> ');
 			}
 
 			// Account for empty days at start

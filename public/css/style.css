@@ -1,0 +1,28 @@
+#wachplan{
+  width:80%;
+  float: left;
+}
+#logout{
+  float: right;
+  width: auto;
+}
+#logout::after{
+  clear: both;
+}
+#adminContent{
+  margin-top: 2em;
+  display: block;
+  float: right;
+  width: auto;
+}
+#userContent{
+  margin-top: 2em;
+  display: block;
+  float: right;
+  width: auto;
+}
+
+footer{
+  clear: both;
+  display: block;
+}

@@ -130,7 +130,7 @@ app.get('/',
                     res.render("admin");
                     break;
                 default:
-                    res.render("index");
+                    res.render("user");
             }
         } else {
             res.redirect("/login");
