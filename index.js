@@ -19,8 +19,7 @@ var LocalUserSchema = new mongoose.Schema({
     isadmin: Boolean,
     isWl: Boolean,
     isBf: Boolean,
-    isWG: Boolean,
-    isWh: Boolean,
+    state: String,
     password: String,
     salt: Buffer
 });
@@ -210,7 +209,18 @@ app.post('/createwachtage',
             res.redirect("/login");
         };
     });
-
+app.post('/applyforwache',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            //process user application here
+            if (req.body.startdate != "" && req.body.enddate != "") {
+                wachplanjs.applyUser(req.user, req.body.startdate, req.body.enddate);
+            }
+            res.redirect("/");
+        } else {
+            res.redirect("/login");
+        };
+    });
 
 app.post('/login',
     passport.authenticate('local', {
@@ -222,13 +232,12 @@ app.post('/login',
 
 app.post('/register',
     function(req, res) {
-        if (req.body.username == "" || req.body.password == ""||req.body.state=="") {
+        if (req.body.username == "" || req.body.password == "" || req.body.state == "") {
             //debugLog(req.body);
             res.redirect("/register");
             return;
         }
-        //debugLog(req.body);
-
+        debugLog(req.body);
         //register user here
         var username = req.body.username;
         debugLog("new registering: " + username);
@@ -248,11 +257,15 @@ app.post('/register',
                     debugLog(err);
                     return;
                 }
+                var state;
                 if (initState) {
                     dbconn.collection("userInfo").insert({
                         'email': req.body.email,
                         'name': username,
                         'isadmin': true,
+                        'isWl': (req.body.isWl == "on") ? true : false,
+                        'isBf': (req.body.isBf == "on") ? true : false,
+                        'state': (req.body.isWl == "on"||req.body.isBf=="on") ? "isWg":req.body.state,
                         'password': hash,
                         'salt': salt
                     });
@@ -262,6 +275,9 @@ app.post('/register',
                         'email': req.body.email,
                         'name': username,
                         'isadmin': false,
+                        'isWl': (req.body.isWl == "on") ? true : false,
+                        'isBf': (req.body.isBf == "on") ? true : false,
+                        'state': (req.body.isWl == "on"||req.body.isBf=="on") ? "isWg":req.body.state,
                         'password': hash,
                         'salt': salt
                     })

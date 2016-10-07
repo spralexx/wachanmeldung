@@ -38,6 +38,22 @@ exports.createWachtag = function(date1, date2) {
     }
 }
 
+exports.applyUser=function(user,startdate,enddate){
+  var now = new Date();
+  if (startdate < now || enddate < now) {
+      console.log("Das Datum liegt in der Vergangenheit!");
+  } else {
+      if (startdate < enddate) {
+          var dateArray = getDates(new Date(startdate), new Date(enddate));
+          console.log("dateArray: " + dateArray);
+          dateArray.forEach(function(current) {
+              //console.log(current);
+              writeToDB(user, current);
+          });
+      }
+  }
+}
+
 exports.getWachplanData = function(year, cb) {
     var Wachtage = Wache.model("year" + year, Wachtag, "year" + year);
     //console.log("year" + year);
@@ -45,6 +61,15 @@ exports.getWachplanData = function(year, cb) {
         //console.log("data: " + data);
         cb(data);
     })
+}
+
+function writeToDB(user,date){
+  var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
+  //console.log("year" + year);
+  Wachtage.find({'date':date.addDays(1)}, function(err, data) {
+      console.log("day to modifie: " + data+"\nUser applied"+user);
+  })
+
 }
 
 function writeToDB(date) {
