@@ -159,17 +159,19 @@ app.get('/wachplandata',
                         "endtime": "18:00",
                         "color": "blue",
                         "url": "",
-                        "wl":current.team.wl,
-                        "bf":current.team.bf,
-                        "wg0":current.team.wg0,
-                        "wg1":current.team.wg1,
-                        "wh0":current.team.wh0,
-                        "wh1":current.team.wh1
+                        "wl": current.team.wl,
+                        "bf": current.team.bf,
+                        "wg0": current.team.wg0,
+                        "wg1": current.team.wg1,
+                        "wh0": current.team.wh0,
+                        "wh1": current.team.wh1
                     })
                 })
                 dataJson = JSON.stringify(dataArray);
-                dataJson={"monthly":JSON.parse(dataJson)}
-                //debugLog(dataJson);
+                dataJson = {
+                        "monthly": JSON.parse(dataJson)
+                    }
+                    //debugLog(dataJson);
                 res.send(dataJson);
             });
         } else {
@@ -220,7 +222,13 @@ app.post('/login',
 
 app.post('/register',
     function(req, res) {
-      debugLog(req.body);
+        if (req.body.username == "" || req.body.password == ""||req.body.state=="") {
+            //debugLog(req.body);
+            res.redirect("/register");
+            return;
+        }
+        //debugLog(req.body);
+
         //register user here
         var username = req.body.username;
         debugLog("new registering: " + username);

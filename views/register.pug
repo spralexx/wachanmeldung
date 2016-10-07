@@ -3,7 +3,7 @@ extends index.pug
 block body
   script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js")
   script(src="js/register.js")
-  form(id ="registerForm" action="/register",method="post")
+  form(id ="registerForm" action="/register" method="post")
     div
       lable e-mail
       input(required type='text' id="email" name="email" placeholder="etwas@etwas.tld")
@@ -26,4 +26,4 @@ block body
       lable Wachhelfer?
       input(required type='radio' id="radioIsWh" name="state" value="isWh")
     div
-      input(id="submit" type="submit" value="submit")
+      input(type="submit" value="Registrieren")
