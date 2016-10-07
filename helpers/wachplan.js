@@ -31,7 +31,7 @@ exports.createWachtag = function(date1, date2) {
             var dateArray = getDates(new Date(date1), new Date(date2));
             console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
-                console.log(current);
+                //console.log(current);
                 writeToDB(current);
             });
         }
@@ -40,9 +40,9 @@ exports.createWachtag = function(date1, date2) {
 
 exports.getWachplanData = function(year, cb) {
     var Wachtage = Wache.model("year" + year, Wachtag, "year" + year);
-    console.log("year" + year);
+    //console.log("year" + year);
     Wachtage.find({}, function(err, data) {
-        console.log("data: " + data);
+        //console.log("data: " + data);
         cb(data);
     })
 }

@@ -1,16 +1,29 @@
 extends index.pug
 
 block body
-  h3=info
-  form(action="/register",method="post")
+  script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js")
+  script(src="js/register.js")
+  form(id ="registerForm" action="/register",method="post")
     div
       lable e-mail
-      input(type='text', name="email")
+      input(required type='text' id="email" name="email" placeholder="etwas@etwas.tld")
     div
       lable Username
-      input(type='text', name="username")
+      input(required type='text' id="username" name="username" placeholder="Vorname Nachname")
     div
       labe Passwort
-      input(type='password', name="password")
+      input(required type='password' id="password" name="password")
     div
-      input(type="submit", value="submit")
+      lable Wachleiter?
+      input(type='checkbox' id="isWl" name="isWl")
+    div
+      lable Bootsführer?
+      input(type='checkbox' id="isBf" name="isBf")
+    div
+      lable Wachgänger?
+      input(required type='radio' id="radioIsWg" name="state" value="isWg")
+    div
+      lable Wachhelfer?
+      input(required type='radio' id="radioIsWh" name="state" value="isWh")
+    div
+      input(id="submit" type="submit" value="submit")

@@ -17,6 +17,10 @@ var LocalUserSchema = new mongoose.Schema({
     email: String,
     name: String,
     isadmin: Boolean,
+    isWl: Boolean,
+    isBf: Boolean,
+    isWG: Boolean,
+    isWh: Boolean,
     password: String,
     salt: Buffer
 });
@@ -216,6 +220,7 @@ app.post('/login',
 
 app.post('/register',
     function(req, res) {
+      debugLog(req.body);
         //register user here
         var username = req.body.username;
         debugLog("new registering: " + username);
