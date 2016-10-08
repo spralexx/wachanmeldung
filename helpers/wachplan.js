@@ -38,8 +38,8 @@ var Wachtag = new mongoose.Schema({
 var Wache = mongoose.createConnection("mongodb://127.0.0.1/Wache");
 
 exports.createWachtag = function(date1, date2) {
-  date1=parseGermanDate(date1);
-  date2=parseGermanDate(date2);
+    date1 = parseGermanDate(date1);
+    date2 = parseGermanDate(date2);
     var now = new Date();
     if (date1 < now || date2 < now) {
         console.log("Das Datum liegt in der Vergangenheit!");
@@ -55,27 +55,27 @@ exports.createWachtag = function(date1, date2) {
     }
 }
 
-function parseGermanDate(dateString){
-  var dayString=dateString.split(" ")[0];
-  var monthString=dateString.split(" ")[1].split(",")[0];
-  var yearString=dateString.split(" ")[2];
-  //Date.parse(dateString, "yyyy-MM-dd HH:mm:ss");
-  var fulldate= new Date(dayString+" "+monthNamesDe[monthString]+", "+yearString);
-  return fulldate;
+function parseGermanDate(dateString) {
+    var dayString = dateString.split(" ")[0];
+    var monthString = dateString.split(" ")[1].split(",")[0];
+    var yearString = dateString.split(" ")[2];
+    //Date.parse(dateString, "yyyy-MM-dd HH:mm:ss");
+    var fulldate = new Date(dayString + " " + monthNamesDe[monthString] + ", " + yearString);
+    return fulldate;
 }
 
 exports.applyUser = function(user, startdate, enddate) {
-  startdate=parseGermanDate(startdate);
-  enddate=parseGermanDate(enddate);
+    startdate = parseGermanDate(startdate);
+    enddate = parseGermanDate(enddate);
     var now = new Date();
     if (startdate < now || enddate < now) {
         console.log("Das Datum liegt in der Vergangenheit!");
     } else {
         if (startdate < enddate) {
             var dateArray = getDates(startdate, enddate);
-            console.log("dateArray: " + dateArray);
+            //console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
-                console.log(current);
+                //console.log(current);
                 writeToDB1(user, current);
             });
         }
@@ -93,16 +93,61 @@ exports.getWachplanData = function(year, cb) {
 
 function writeToDB1(user, date) {
     var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
-    //console.log("year" + year);
-    Wachtage.find({
+    console.log("date: " + date);
+    Wachtage.findOne({
         'date': date.addDays(1)
-    }, function(err, data) {
-        console.log("day to modifie: " + data + "\nUser applied" + user);
+    }, function(err, dayToModify) {
+        var dayToModify = prepareDbData(user, dayToModify);
+        dayToModify.save();
     })
 
 }
 
+function prepareDbData(user, dayToModify) {
+
+    dayToModify.team.wl = (dayToModify.team.wl == null) ? (function(user) {
+        if (user.isWl) {
+            return mongoose.Types.ObjectId(user._id);
+        } else {
+            return null;
+        }
+    })(user) : dayToModify.team.wl;
+    console.log(typeof dayToModify.team.wl);
+    if(dayToModify.team.wl.toString()==user._id.toString()) return dayToModify;
+    dayToModify.team.bf = (dayToModify.team.bf == null) ? (function(user) {
+        if (user.isBf) {
+            return mongoose.Types.ObjectId(user._id);
+        } else {
+            return null;
+        }
+    })(user) : dayToModify.team.bf;
+    if(dayToModify.team.bf.toString()==user._id.toString()) return dayToModify;
+    dayToModify.team.wg0 = (dayToModify.team.wg0 == null) ? (function(user) {
+        if (user.state == "isWg") {
+            return mongoose.Types.ObjectId(user._id);
+        } else {
+            return null;
+        }
+    })(user) : dayToModify.team.wg0;
+    if(dayToModify.team.wg0.toString()==user._id.toString()) return dayToModify;
+    dayToModify.team.wg1 = (dayToModify.team.wg1 == null) ? (function(user) {
+        if (user.state == "isWg") {
+            return mongoose.Types.ObjectId(user._id);
+        } else {
+            return null;
+        }
+    })(user) : dayToModify.team.wg1;
+    if(dayToModify.team.wg1.toString()==user._id.toString()) return dayToModify;
+    dayToModify.team.wh0 = (dayToModify.team.wh0 == null) ? mongoose.Types.ObjectId(user._id) : dayToModify.team.wh0;
+    if(dayToModify.team.wh0.toString()==user._id.toString()) return dayToModify;
+    dayToModify.team.wh1 = (dayToModify.team.wh1 == null) ? mongoose.Types.ObjectId(user._id) : dayToModify.team.wh1;
+    //console.log(returnData);
+    return dayToModify;
+}
+
 function writeToDB(date) {
+    console.log("date: " + date);
+
     Wache.collection("year" + String(date.getFullYear())).insert(
 
         {
