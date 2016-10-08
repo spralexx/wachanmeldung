@@ -141,6 +141,7 @@ app.get('/',
         }
     });
 
+
 app.get('/wachplandata',
     function(req, res) {
         if (req.isAuthenticated()) {
@@ -265,7 +266,7 @@ app.post('/register',
                         'isadmin': true,
                         'isWl': (req.body.isWl == "on") ? true : false,
                         'isBf': (req.body.isBf == "on") ? true : false,
-                        'state': (req.body.isWl == "on"||req.body.isBf=="on") ? "isWg":req.body.state,
+                        'state': (req.body.isWl == "on" || req.body.isBf == "on") ? "isWg" : req.body.state,
                         'password': hash,
                         'salt': salt
                     });
@@ -277,7 +278,7 @@ app.post('/register',
                         'isadmin': false,
                         'isWl': (req.body.isWl == "on") ? true : false,
                         'isBf': (req.body.isBf == "on") ? true : false,
-                        'state': (req.body.isWl == "on"||req.body.isBf=="on") ? "isWg":req.body.state,
+                        'state': (req.body.isWl == "on" || req.body.isBf == "on") ? "isWg" : req.body.state,
                         'password': hash,
                         'salt': salt
                     })
@@ -307,6 +308,8 @@ app.get('/logout',
 app.listen(port, function() {
     debugLog("Listening on Port: " + port);
 })
+
+
 
 function debugLog(msg) {
     if (debugMode) {

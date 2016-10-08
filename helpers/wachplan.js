@@ -22,12 +22,12 @@ var Wachtag = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     date: Date,
     team: {
-        wl: mongoose.Schema.Types.ObjectId,
-        bf: mongoose.Schema.Types.ObjectId,
-        wg0: mongoose.Schema.Types.ObjectId,
-        wg1: mongoose.Schema.Types.ObjectId,
-        wh0: mongoose.Schema.Types.ObjectId,
-        wh1: mongoose.Schema.Types.ObjectId
+        wl: String,
+        bf: String,
+        wg0: String,
+        wg1: String,
+        wh0: String,
+        wh1: String
     },
     meal: {
         name: String,
@@ -86,7 +86,8 @@ exports.getWachplanData = function(year, cb) {
     var Wachtage = Wache.model("year" + year, Wachtag, "year" + year);
     //console.log("year" + year);
     Wachtage.find({}, function(err, data) {
-        //console.log("data: " + data);
+        console.log("data: " + data);
+
         cb(data);
     })
 }
@@ -107,40 +108,65 @@ function prepareDbData(user, dayToModify) {
 
     dayToModify.team.wl = (dayToModify.team.wl == null) ? (function(user) {
         if (user.isWl) {
-            return mongoose.Types.ObjectId(user._id);
+            return user.name;
         } else {
             return null;
         }
     })(user) : dayToModify.team.wl;
     console.log(typeof dayToModify.team.wl);
-    if(dayToModify.team.wl.toString()==user._id.toString()) return dayToModify;
+try{
+    if(dayToModify.team.wl.toString()==user.name.toString()) return dayToModify;
+}
+catch(err){
+
+}
     dayToModify.team.bf = (dayToModify.team.bf == null) ? (function(user) {
         if (user.isBf) {
-            return mongoose.Types.ObjectId(user._id);
+            return user.name;
         } else {
             return null;
         }
     })(user) : dayToModify.team.bf;
-    if(dayToModify.team.bf.toString()==user._id.toString()) return dayToModify;
+try{
+    if(dayToModify.team.bf.toString()==user.name.toString()) return dayToModify;
+}
+catch(err){
+
+}
     dayToModify.team.wg0 = (dayToModify.team.wg0 == null) ? (function(user) {
         if (user.state == "isWg") {
-            return mongoose.Types.ObjectId(user._id);
+            return user.name;
         } else {
             return null;
         }
     })(user) : dayToModify.team.wg0;
-    if(dayToModify.team.wg0.toString()==user._id.toString()) return dayToModify;
+try{
+    if(dayToModify.team.wg0.toString()==user.name.toString()) return dayToModify;
+}
+catch(err){
+
+}
     dayToModify.team.wg1 = (dayToModify.team.wg1 == null) ? (function(user) {
         if (user.state == "isWg") {
-            return mongoose.Types.ObjectId(user._id);
+            return user.name;
         } else {
             return null;
         }
     })(user) : dayToModify.team.wg1;
-    if(dayToModify.team.wg1.toString()==user._id.toString()) return dayToModify;
-    dayToModify.team.wh0 = (dayToModify.team.wh0 == null) ? mongoose.Types.ObjectId(user._id) : dayToModify.team.wh0;
-    if(dayToModify.team.wh0.toString()==user._id.toString()) return dayToModify;
-    dayToModify.team.wh1 = (dayToModify.team.wh1 == null) ? mongoose.Types.ObjectId(user._id) : dayToModify.team.wh1;
+try{
+    if(dayToModify.team.wg1.toString()==user.name.toString()) return dayToModify;
+}
+catch(err){
+
+}
+    dayToModify.team.wh0 = (dayToModify.team.wh0 == null) ? user.name : dayToModify.team.wh0;
+try{
+    if(dayToModify.team.wh0.toString()==user.name.toString()) return dayToModify;
+}
+catch(err){
+
+}
+    dayToModify.team.wh1 = (dayToModify.team.wh1 == null) ? user.name : dayToModify.team.wh1;
     //console.log(returnData);
     return dayToModify;
 }
