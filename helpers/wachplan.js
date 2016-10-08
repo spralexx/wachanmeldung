@@ -2,6 +2,21 @@
 var exports = module.exports = {};
 var mongoose = require("mongoose");
 
+var monthNamesDe = {
+    'Januar': "January",
+    'Februar': "February",
+    'März': "March",
+    'April': "April",
+    'Mai': "May",
+    'Juni': "June",
+    'Juli': "July",
+    'August': "August",
+    'September': "September",
+    'Oktober': "October",
+    'November': "November",
+    'Dezember': "December"
+}
+
 
 var Wachtag = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -23,12 +38,14 @@ var Wachtag = new mongoose.Schema({
 var Wache = mongoose.createConnection("mongodb://127.0.0.1/Wache");
 
 exports.createWachtag = function(date1, date2) {
+  date1=parseGermanDate(date1);
+  date2=parseGermanDate(date2);
     var now = new Date();
     if (date1 < now || date2 < now) {
         console.log("Das Datum liegt in der Vergangenheit!");
     } else {
         if (date1 < date2) {
-            var dateArray = getDates(new Date(date1), new Date(date2));
+            var dateArray = getDates(date1, date2);
             console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
                 //console.log(current);
@@ -38,20 +55,31 @@ exports.createWachtag = function(date1, date2) {
     }
 }
 
-exports.applyUser=function(user,startdate,enddate){
-  var now = new Date();
-  if (startdate < now || enddate < now) {
-      console.log("Das Datum liegt in der Vergangenheit!");
-  } else {
-      if (startdate < enddate) {
-          var dateArray = getDates(new Date(startdate), new Date(enddate));
-          console.log("dateArray: " + dateArray);
-          dateArray.forEach(function(current) {
-              //console.log(current);
-              writeToDB(user, current);
-          });
-      }
-  }
+function parseGermanDate(dateString){
+  var dayString=dateString.split(" ")[0];
+  var monthString=dateString.split(" ")[1].split(",")[0];
+  var yearString=dateString.split(" ")[2];
+  //Date.parse(dateString, "yyyy-MM-dd HH:mm:ss");
+  var fulldate= new Date(dayString+" "+monthNamesDe[monthString]+", "+yearString);
+  return fulldate;
+}
+
+exports.applyUser = function(user, startdate, enddate) {
+  startdate=parseGermanDate(startdate);
+  enddate=parseGermanDate(enddate);
+    var now = new Date();
+    if (startdate < now || enddate < now) {
+        console.log("Das Datum liegt in der Vergangenheit!");
+    } else {
+        if (startdate < enddate) {
+            var dateArray = getDates(startdate, enddate);
+            console.log("dateArray: " + dateArray);
+            dateArray.forEach(function(current) {
+                console.log(current);
+                writeToDB1(user, current);
+            });
+        }
+    }
 }
 
 exports.getWachplanData = function(year, cb) {
@@ -63,12 +91,14 @@ exports.getWachplanData = function(year, cb) {
     })
 }
 
-function writeToDB(user,date){
-  var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
-  //console.log("year" + year);
-  Wachtage.find({'date':date.addDays(1)}, function(err, data) {
-      console.log("day to modifie: " + data+"\nUser applied"+user);
-  })
+function writeToDB1(user, date) {
+    var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
+    //console.log("year" + year);
+    Wachtage.find({
+        'date': date.addDays(1)
+    }, function(err, data) {
+        console.log("day to modifie: " + data + "\nUser applied" + user);
+    })
 
 }
 
