@@ -22,12 +22,36 @@ var Wachtag = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     date: Date,
     team: {
-        wl: String,
-        bf: String,
-        wg0: String,
-        wg1: String,
-        wh0: String,
-        wh1: String
+        wl: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
+        bf: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
+        wg0: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
+        wg1: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
+        wh0: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
+        wh1: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        }
     },
     meal: {
         name: String,
@@ -86,7 +110,7 @@ exports.getWachplanData = function(year, cb) {
     var Wachtage = Wache.model("year" + year, Wachtag, "year" + year);
     //console.log("year" + year);
     Wachtage.find({}, function(err, data) {
-        console.log("data: " + data);
+        //console.log("data: " + data);
 
         cb(data);
     })
@@ -105,68 +129,97 @@ function writeToDB1(user, date) {
 }
 
 function prepareDbData(user, dayToModify) {
+    for (var key in dayToModify.team) {
+        try {
+            if (user._id.toString() == dayToModify.team[key].userId.toString()) {
+              console.log("user kann nciht 2 positionen haben!")
+                return dayToModify;
+            }
+        } catch (e) {
 
-    dayToModify.team.wl = (dayToModify.team.wl == null) ? (function(user) {
+        }
+    }
+
+    dayToModify.team.wl = (dayToModify.team.wl.name == null || dayToModify.team.wl.freeForChange) ? (function(user) {
         if (user.isWl) {
-            return user.name;
+            return {
+                name: user.name,
+                userId: user._id,
+                freeForChange: false
+            };
         } else {
-            return null;
+            return dayToModify.team.bf;
         }
     })(user) : dayToModify.team.wl;
-    console.log(typeof dayToModify.team.wl);
-try{
-    if(dayToModify.team.wl.toString()==user.name.toString()) return dayToModify;
-}
-catch(err){
+    //console.log(typeof dayToModify.team.wl.name);
+    try {
+        if (dayToModify.team.wl.userId == user._id) return dayToModify;
+    } catch (err) {
 
-}
-    dayToModify.team.bf = (dayToModify.team.bf == null) ? (function(user) {
+    }
+    dayToModify.team.bf = (dayToModify.team.bf.name == null || dayToModify.team.bf.freeForChange) ? (function(user) {
         if (user.isBf) {
-            return user.name;
+            return {
+                name: user.name,
+                userId: user._id,
+                freeForChange: false
+            };
         } else {
-            return null;
+            return dayToModify.team.bf
         }
     })(user) : dayToModify.team.bf;
-try{
-    if(dayToModify.team.bf.toString()==user.name.toString()) return dayToModify;
-}
-catch(err){
+    try {
+        if (dayToModify.team.bf.userId == user._id) return dayToModify;
+    } catch (err) {
 
-}
-    dayToModify.team.wg0 = (dayToModify.team.wg0 == null) ? (function(user) {
+    }
+    dayToModify.team.wg0 = (dayToModify.team.wg0.name == null || dayToModify.team.wg0.freeForChange) ? (function(user) {
         if (user.state == "isWg") {
-            return user.name;
+            return {
+                name: user.name,
+                userId: user._id,
+                freeForChange: false
+            };
         } else {
-            return null;
+            return dayToModify.team.wg0
         }
     })(user) : dayToModify.team.wg0;
-try{
-    if(dayToModify.team.wg0.toString()==user.name.toString()) return dayToModify;
-}
-catch(err){
+    try {
+        if (dayToModify.team.wg0.userId == user._id) return dayToModify;
+    } catch (err) {
 
-}
-    dayToModify.team.wg1 = (dayToModify.team.wg1 == null) ? (function(user) {
+    }
+    dayToModify.team.wg1 = (dayToModify.team.wg1.name == null || dayToModify.team.wg1.freeForChange) ? (function(user) {
         if (user.state == "isWg") {
-            return user.name;
+            return {
+                name: user.name,
+                userId: user._id,
+                freeForChange: false
+            };
         } else {
-            return null;
+            return dayToModify.team.wg1
         }
     })(user) : dayToModify.team.wg1;
-try{
-    if(dayToModify.team.wg1.toString()==user.name.toString()) return dayToModify;
-}
-catch(err){
+    try {
+        if (dayToModify.team.wg1.userId == user._id) return dayToModify;
+    } catch (err) {
 
-}
-    dayToModify.team.wh0 = (dayToModify.team.wh0 == null) ? user.name : dayToModify.team.wh0;
-try{
-    if(dayToModify.team.wh0.toString()==user.name.toString()) return dayToModify;
-}
-catch(err){
+    }
+    dayToModify.team.wh0 = (dayToModify.team.wh0.name == null || dayToModify.team.wh0.freeForChange) ? {
+        name: user.name,
+        userId: user._id,
+        freeForChange: false
+    } : dayToModify.team.wh0;
+    try {
+        if (dayToModify.team.wh0.userId == user._id) return dayToModify;
+    } catch (err) {
 
-}
-    dayToModify.team.wh1 = (dayToModify.team.wh1 == null) ? user.name : dayToModify.team.wh1;
+    }
+    dayToModify.team.wh1 = (dayToModify.team.wh1.name == null || dayToModify.team.wh1.freeForChange) ? {
+        name: user.name,
+        userId: user._id,
+        freeForChange: false
+    } : dayToModify.team.wh1;
     //console.log(returnData);
     return dayToModify;
 }
@@ -179,18 +232,109 @@ function writeToDB(date) {
         {
             date: date.addDays(1),
             team: {
-                wl: null,
-                bf: null,
-                wg0: null,
-                wg1: null,
-                wh0: null,
-                wh1: null
+                wl: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                bf: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                wg0: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                wg1: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                wh0: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                wh1: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                }
             },
             meal: {
                 name: null,
                 admin: null
             }
         });
+}
+
+exports.getFreePositions = function(cb) {
+    var now = new Date();
+    exports.getWachplanData(now.getFullYear(), function(allDays) {
+        var freeDays = new Array();
+        allDays.forEach(function(current, index) {
+            //check if there are freeed positions on this Date
+            for (var key in current.team) {
+                try {
+                    //console.log(dayToModify.team[key].userId.toString()==user._id.toString());
+                    if (current.team[key].freeForChange) {
+                        freeDays.push({
+                            'date': current.date,
+                            'position': key,
+                        });
+
+                    }
+                } catch (e) {
+
+                }
+            }
+        })
+        console.log(freeDays);
+        cb(freeDays);
+    });
+
+
+}
+
+exports.freeDays = function(user, startdate, enddate) {
+    startdate = parseGermanDate(startdate);
+    enddate = parseGermanDate(enddate);
+    var now = new Date();
+    if (startdate < now || enddate < now) {
+        console.log("Das Datum liegt in der Vergangenheit!");
+    } else {
+        if (startdate < enddate) {
+            var dateArray = getDates(startdate, enddate);
+            //console.log("dateArray: " + dateArray);
+            dateArray.forEach(function(current) {
+                //console.log(current);
+                writeToDB2(user, current);
+            });
+        }
+    }
+}
+
+function writeToDB2(user, date) {
+    var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
+    //console.log("date: " + date);
+    Wachtage.findOne({
+        'date': date.addDays(1)
+    }, function(err, dayToModify) {
+        console.log("user._id: " + typeof user._id + " dayToModify.team.wl.userId: " + typeof dayToModify.team.wl.userId);
+        for (var key in dayToModify.team) {
+            try {
+                //console.log(dayToModify.team[key].userId.toString()==user._id.toString());
+                if (dayToModify.team[key].userId.toString() == user._id.toString()) {
+                    dayToModify.team[key].freeForChange = true;
+                }
+            } catch (e) {
+
+            }
+        }
+        dayToModify.save();
+    })
 }
 
 Date.prototype.addDays = function(days) {

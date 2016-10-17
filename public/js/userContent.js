@@ -30,7 +30,12 @@ $(function() {
         dateFormat: 'd MM, y',
         firstDay:1
     }
+    /*
     $("#startdatepicker").datepicker(datepickerconfig);
     $("#enddatepicker").datepicker(datepickerconfig);
+    */
+   $(".datePicker").each(function(){
+     $(this).datepicker(datepickerconfig);
+   })
 
 });

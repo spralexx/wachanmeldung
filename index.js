@@ -133,8 +133,24 @@ app.get('/',
                     res.render("admin");
                     break;
                 default:
-                    res.render("user");
+                    wachplanjs.getFreePositions(function(freeDays) {
+                        debugLog("freeDays: " + freeDays)
+                        res.render("user", {freeDays});
+                    })
             }
+        } else {
+            res.redirect("/login");
+
+        }
+    });
+
+app.get('/returnFreeDays',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            wachplanjs.getFreePositions(function(freeDays) {
+                res.send(freeDays);
+            })
+
         } else {
             res.redirect("/login");
 
@@ -159,12 +175,12 @@ app.get('/wachplandata',
                         "endtime": "18:00",
                         "color": "blue",
                         "url": "",
-                        "wl": current.team.wl,
-                        "bf": current.team.bf,
-                        "wg0": current.team.wg0,
-                        "wg1": current.team.wg1,
-                        "wh0": current.team.wh0,
-                        "wh1": current.team.wh1
+                        "wl": current.team.wl.name,
+                        "bf": current.team.bf.name,
+                        "wg0": current.team.wg0.name,
+                        "wg1": current.team.wg1.name,
+                        "wh0": current.team.wh0.name,
+                        "wh1": current.team.wh1.name
                     })
                 })
                 dataJson = JSON.stringify(dataArray);
@@ -216,6 +232,18 @@ app.post('/applyforwache',
             //process user application here
             if (req.body.startdate != "" && req.body.enddate != "") {
                 wachplanjs.applyUser(req.user, req.body.startdate, req.body.enddate);
+            }
+            res.redirect("/");
+        } else {
+            res.redirect("/login");
+        };
+    });
+
+app.post('/freeDays',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            if (req.body.startdate != "" && req.body.enddate != "") {
+                wachplanjs.freeDays(req.user, req.body.startdate, req.body.enddate)
             }
             res.redirect("/");
         } else {

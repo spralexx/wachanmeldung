@@ -4,11 +4,47 @@ section(id="userContent")
     form(action="/applyforwache" method="post")
       lable Starttag
       br
-      input(type="text" id="startdatepicker" name="startdate")
+      input(type="text" class="datePicker" name="startdate")
       br
       lable Endtag
       br
-      input(type="text" id="enddatepicker" name="enddate")
+      input(type="text" class="datePicker" name="enddate")
       br
       input(type="submit" value="Anmelden")
     
+    article(id="freeDays")
+      form(action="/freeDays" method="post")
+        lable Starttag
+        br
+        input(type="text" class="datePicker" name="startdate")
+        br
+        lable Endtag
+        br
+        input(type="text" class="datePicker" name="enddate")
+        br
+        input(type="submit" value="Zeitraum freigeben")
+    article(id="listFreeDays")
+      table
+        p Zum Tausch freigegeben
+        tr
+          th Datum
+          th Position
+        -
+        -var month = new Array();
+        -month[0] = "Jan";
+        -month[1] = "Feb";
+        -month[2] = "Mär";
+        -month[3] = "Apr";
+        -month[4] = "Mai";
+        -month[5] = "Jun";
+        -month[6] = "Jul";
+        -month[7] = "Aug";
+        -month[8] = "Sep";
+        -month[9] = "Okt";
+        -month[10] = "Nov";
+        -month[11] = "Dez";
+        each item in freeDays
+          tr
+            td=item.date.getDate()-1+"."+month[item.date.getMonth()]+"."+item.date.getFullYear()
+            td=item.position 
+        
