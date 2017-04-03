@@ -348,10 +348,9 @@ Date.prototype.addDays = function(days) {
     return dat;
 }
 
-
 function getDates(startDate, stopDate) {
     var dateArray = new Array();
-    var currentDate = startDate;
+    var currentDate = startDate.addDays(1);
     console.log("startDate: " + startDate.toISOString())
     while (currentDate <= stopDate) {
         dateArray.push(new Date(currentDate))
