@@ -11,10 +11,9 @@ var mongoose = require('mongoose');
 var wachplanjs = require("./helpers/wachplan")
 var initState = true;
 
-
 var LocalUserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    email: String,
+//    email: String,
     name: String,
     isadmin: Boolean,
     isWl: Boolean,
@@ -178,7 +177,7 @@ app.get('/wachplandata',
                         "wl": current.team.wl.name,
                         "bf": current.team.bf.name,
                         "wg0": current.team.wg0.name,
-                        "wg1": current.team.wg1.name,
+//                        "wg1": current.team.wg1.name,
                         "wh0": current.team.wh0.name,
                         "wh1": current.team.wh1.name
                     })
@@ -289,7 +288,7 @@ app.post('/register',
                 var state;
                 if (initState) {
                     dbconn.collection("userInfo").insert({
-                        'email': req.body.email,
+//                        'email': req.body.email,
                         'name': username,
                         'isadmin': true,
                         'isWl': (req.body.isWl == "on") ? true : false,
@@ -301,7 +300,7 @@ app.post('/register',
                     initState = false;
                 } else {
                     dbconn.collection("userInfo").insert({
-                        'email': req.body.email,
+//                        'email': req.body.email,
                         'name': username,
                         'isadmin': false,
                         'isWl': (req.body.isWl == "on") ? true : false,
