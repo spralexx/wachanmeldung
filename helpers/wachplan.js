@@ -124,6 +124,7 @@ function writeToDB1(user, date) {
     Wachtage.findOne({
         'date': date.toISOString()
     }, function(err, dayToModify) {
+      console.log("dayToModify: " + dayToModify);
         var dayToModify = prepareDbData(user, dayToModify);
         dayToModify.save();
     })
