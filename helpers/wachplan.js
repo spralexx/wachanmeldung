@@ -124,7 +124,7 @@ function writeToDB1(user, date) {
     Wachtage.findOne({
         'date': date.addDays(1)
     }, function(err, dayToModify) {
-      console.log("dayToModify: " + dayToModify);
+      console.log("dayToModify: " + dayToModify+ err);
         var dayToModify = prepareDbData(user, dayToModify);
         dayToModify.save();
     })
@@ -235,7 +235,7 @@ function writeToDB(date) {
     Wache.collection("year" + String(date.getFullYear())).insert(
 
         {
-            date: date.toISOString(),
+            date: date,
             team: {
                 wl: {
                     name: null,
@@ -352,7 +352,6 @@ Date.prototype.addDays = function(days) {
 function getDates(startDate, stopDate) {
     var dateArray = new Array();
     var currentDate = startDate.addDays(1);
-    //console.log("startDate: " + startDate.toISOString())
     while (currentDate <= stopDate.addDays(1)) {
         dateArray.push(new Date(currentDate))
         currentDate = currentDate.addDays(1);
