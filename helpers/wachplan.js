@@ -122,7 +122,7 @@ function writeToDB1(user, date) {
     var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
     console.log("date: " + date);
     Wachtage.findOne({
-        'date': date.addDays(1)
+        'date': date
     }, function(err, dayToModify) {
         var dayToModify = prepareDbData(user, dayToModify);
         dayToModify.save();
@@ -234,7 +234,7 @@ function writeToDB(date) {
     Wache.collection("year" + String(date.getFullYear())).insert(
 
         {
-            date: date.addDays(1),
+            date: date,
             team: {
                 wl: {
                     name: null,
@@ -325,7 +325,7 @@ function writeToDB2(user, date) {
     var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
     //console.log("date: " + date);
     Wachtage.findOne({
-        'date': date.addDays(1)
+        'date': date
     }, function(err, dayToModify) {
         console.log("user._id: " + typeof user._id + " dayToModify.team.wl.userId: " + typeof dayToModify.team.wl.userId);
         for (var key in dayToModify.team) {
@@ -347,6 +347,7 @@ Date.prototype.addDays = function(days) {
     dat.setDate(dat.getDate() + days);
     return dat;
 }
+
 
 function getDates(startDate, stopDate) {
     var dateArray = new Array();
