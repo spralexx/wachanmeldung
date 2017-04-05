@@ -37,13 +37,13 @@ var Wachtag = new mongoose.Schema({
             userId: mongoose.Schema.Types.ObjectId,
             freeForChange: Boolean
         },
-/*
-        wg1: {
-            name: String,
-            userId: mongoose.Schema.Types.ObjectId,
-            freeForChange: Boolean
-        },
-*/
+        /*
+                wg1: {
+                    name: String,
+                    userId: mongoose.Schema.Types.ObjectId,
+                    freeForChange: Boolean
+                },
+        */
         wh0: {
             name: String,
             userId: mongoose.Schema.Types.ObjectId,
@@ -135,7 +135,7 @@ function prepareDbData(user, dayToModify) {
     for (var key in dayToModify.team) {
         try {
             if (user._id.toString() == dayToModify.team[key].userId.toString()) {
-              console.log("user kann nciht 2 positionen haben!")
+                console.log("user kann nciht 2 positionen haben!")
                 return dayToModify;
             }
         } catch (e) {
@@ -252,7 +252,7 @@ function writeToDB(date) {
                     userId: null,
                     freeForChange: null
                 },
-  /*              wg1: {
+                /*              wg1: {
                     name: null,
                     userId: null,
                     freeForChange: null

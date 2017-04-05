@@ -129,12 +129,12 @@ app.get('/',
             //debugLog(new Date());
             switch (req.user.isadmin) {
                 case true:
-                    res.render("admin");
+                    res.render("admin",{ pretty: true });
                     break;
                 default:
                     wachplanjs.getFreePositions(function(freeDays) {
                         debugLog("freeDays: " + freeDays)
-                        res.render("user", {freeDays});
+                        res.render("user", {freeDays, pretty: true });
                     })
             }
         } else {
@@ -200,7 +200,8 @@ app.get('/login',
             res.redirect("/");
         } else {
             res.render('login', {
-                isNotLoggedin: true
+                isNotLoggedin: true,
+                pretty: true
             });
         }
     });
@@ -322,7 +323,8 @@ app.get('/register',
             res.redirect("/");
         } else {
             res.render('register', {
-                isNotLoggedin: true
+                isNotLoggedin: true,
+                pretty: true
             });
         }
     });
