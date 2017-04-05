@@ -1,13 +1,13 @@
 extends index.pug
 
 block body
-  form(action="/login",method="post")
-    div
-      lable Username
-      input(type='text', name="username")
-    div
-      labe Passwort
-      input(type='password', name="password")
-    div
-      input(type="submit", value="submit")
-    a(href="/register") Kein Login? Hier registrieren!
+  div(class="container")
+    form(action="/login",method="post")
+      div(class="input-group")
+        input(type='text', class="form-control", placeholder="Benutzername", name="username")
+      div(class="input-group")
+        input(type='password', class="form-control", placeholder="Passwort", name="password")
+      div(class="input-group")
+        input(type="submit", value="Anmelden" class="btn btn-success")
+  div(class="container")
+    a(href="/register", role="button", class="btn btn-info") Hier registrieren

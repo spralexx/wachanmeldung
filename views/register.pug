@@ -3,24 +3,25 @@ extends index.pug
 block body
   script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js")
   script(src="js/register.js")
-  form(id ="registerForm" action="/register" method="post")
-    div
-      lable Username
-      input(required type='text' id="username" name="username" placeholder="Vorname Nachname")
-    div
-      labe Passwort
-      input(required type='password' id="password" name="password")
-    div
-      lable Wachleiter?
-      input(type='checkbox' id="isWl" name="isWl")
-    div
-      lable Bootsführer?
-      input(type='checkbox' id="isBf" name="isBf")
-    div
-      lable Wachgänger?
-      input(required type='radio' id="radioIsWg" name="state" value="isWg")
-    div
-      lable Wachhelfer?
-      input(required type='radio' id="radioIsWh" name="state" value="isWh")
-    div
-      input(type="submit" value="Registrieren")
+  div(class="container")
+    form(id ="registerForm" action="/register" method="post")
+      div(class="input-group")
+        input(required type='text' id="username" name="username" placeholder="Benutzername", class="form-control")
+      div(class="input-group")
+        input(required type='password' id="password" name="password", class="form-control", placeholder="Passwort")
+      div(class="input-group")
+        input(type='checkbox' id="isWl" name="isWl")
+        lable Wachleiter?
+      div(class="input-group")
+        input(type='checkbox' id="isBf" name="isBf")
+        lable Bootsführer?
+      div(class="input-group")
+        input(required type='radio' id="radioIsWg" name="state" value="isWg")
+        lable Wachgänger?
+      div(class="input-group")
+        input(required type='radio' id="radioIsWh" name="state" value="isWh")
+        lable Wachhelfer?
+      div(class="input-group input-group-lg")
+        input(type="submit", value="Registrieren", class="btn btn-success")
+  div(class="container")
+    a(href="/login", role="button", class="btn btn-info") Zum Login
