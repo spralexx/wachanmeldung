@@ -11,9 +11,10 @@ html
       link(href="css/style.css" rel="stylesheet")
   block debug
   body
-    include includes/logout.pug
-    block body
-
+    div(class="jumbotron")
+      p Wachanmeldetool der DLRG-Glücksburg
+    div(class="body")
+      block body
     footer(class="footer")
       div(class="container")
         span(class="text-muted") by René Krick

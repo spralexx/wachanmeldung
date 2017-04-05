@@ -1,13 +1,16 @@
 section(id="adminContent")
   script(src="js/adminContent.js")
-  article(id="createNewWache")
-    form(action="/createwachtage" method="post")
-      lable Starttag
-      br
-      input(type="text" id="startdatepicker" name="startdate")
-      br
-      lable Endtag
-      br
-      input(type="text" id="enddatepicker" name="enddate")
-      br
-      input(type="submit" value="Anlegen")
+  div(class="row-fluid")
+    div(class="offset1 span8 pull-right limitTo20em")
+      article(id="createNewWache")
+        h3  Wachtage anlegen
+        form(action="/createwachtage" method="post")
+        div(class="input-group")
+          span(class="input-group-addon") Starttag
+          input(type="text" id="startdatepicker" name="startdate", class="form-control")
+        div(class="input-group")
+          span(class="input-group-addon") Endtag
+          input(type="text" id="enddatepicker" name="enddate", class="form-control")
+        div(class="input-group")
+          input(type="submit" value="Anlegen", class="btn btn-success")
+        include logout.pug

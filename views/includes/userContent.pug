@@ -1,50 +1,54 @@
 section(id="userContent")
   script(src="js/userContent.js")
-  article(id="applyForWache")
-    form(action="/applyforwache" method="post")
-      lable Starttag
-      br
-      input(type="text" class="datePicker" name="startdate")
-      br
-      lable Endtag
-      br
-      input(type="text" class="datePicker" name="enddate")
-      br
-      input(type="submit" value="Anmelden")
-    
-    article(id="freeDays")
-      form(action="/freeDays" method="post")
-        lable Starttag
-        br
-        input(type="text" class="datePicker" name="startdate")
-        br
-        lable Endtag
-        br
-        input(type="text" class="datePicker" name="enddate")
-        br
-        input(type="submit" value="Zeitraum freigeben")
-    article(id="listFreeDays")
-      table
-        p Zum Tausch freigegeben
-        tr
-          th Datum
-          th Position
-        -
-        -var month = new Array();
-        -month[0] = "Jan";
-        -month[1] = "Feb";
-        -month[2] = "Mär";
-        -month[3] = "Apr";
-        -month[4] = "Mai";
-        -month[5] = "Jun";
-        -month[6] = "Jul";
-        -month[7] = "Aug";
-        -month[8] = "Sep";
-        -month[9] = "Okt";
-        -month[10] = "Nov";
-        -month[11] = "Dez";
-        each item in freeDays
+  div(class="row-fluid")
+    div(class="offset1 span8 pull-right limitTo20em")
+      article(id="applyForWache")
+        h3 Anmelden
+        form(action="/applyforwache" method="post")
+          div(class="input-group")
+            span(class="input-group-addon") Starttag
+            input(type="text" class="datePicker" name="startdate", class="form-control", placeholder="Startdatum")
+          div(class="input-group")
+            span(class="input-group-addon") Endtag
+            input(type="text" class="datePicker" name="enddate", class="form-control", placeholder="Enddatum")
+          div(class="input-group")
+            input(type="submit" value="Anmelden", class="btn btn-success")
+
+        include logout.pug
+
+    div(class="pull-left limitTo20em")
+      article(id="freeDays")
+        h3 Abmelden
+        form(action="/freeDays" method="post" id="freeForm")
+        div(class="input-group")
+          span(class="input-group-addon") Starttag
+          input(type="text" class="datePicker" name="startdate", class="form-control")
+        div(class="input-group")
+          span(class="input-group-addon") Endttag
+          input(type="text" class="datePicker" name="enddate", class="form-control")
+        div(class="input-group")
+          input(type="submit" value="Zeitraum freigeben", class="btn btn-success")
+      article(id="listFreeDays")
+        table
+          p Zum Tausch freigegeben
           tr
-            td=item.date.getDate()-1+"."+month[item.date.getMonth()]+"."+item.date.getFullYear()
-            td=item.position 
-        
+            th Datum
+            th Position
+          -
+          -var month = new Array();
+          -month[0] = "Jan";
+          -month[1] = "Feb";
+          -month[2] = "Mär";
+          -month[3] = "Apr";
+          -month[4] = "Mai";
+          -month[5] = "Jun";
+          -month[6] = "Jul";
+          -month[7] = "Aug";
+          -month[8] = "Sep";
+          -month[9] = "Okt";
+          -month[10] = "Nov";
+          -month[11] = "Dez";
+          each item in freeDays
+            tr
+              td=item.date.getDate()-1+"."+month[item.date.getMonth()]+"."+item.date.getFullYear()
+              td=item.position
