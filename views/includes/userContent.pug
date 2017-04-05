@@ -1,7 +1,7 @@
 section(id="userContent")
   script(src="js/userContent.js")
   div(class="row-fluid")
-    div(class="offset1 span8 pull-right limitTo20em")
+    div(class="offset1 span8 pull-right limitTo20em" id="applicationForm")
       article(id="applyForWache")
         h3 Anmelden
         form(action="/applyforwache" method="post")
@@ -16,7 +16,7 @@ section(id="userContent")
 
         include logout.pug
 
-    div(class="pull-left limitTo20em")
+    div(class="pull-left limitTo20em" id="freeDasyForm")
       article(id="freeDays")
         h3 Abmelden
         form(action="/freeDays" method="post" id="freeForm")
