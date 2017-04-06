@@ -137,8 +137,10 @@ app.get('/',
                 default:
                     wachplanjs.getFreePositions(function(freeDays) {
                         debugLog("freeDays: " + freeDays)
+                        var user=req.user;
                         res.render("user", {
                             freeDays,
+                            user,
                             pretty: true
                         });
                     })

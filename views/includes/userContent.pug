@@ -11,18 +11,25 @@ section(id="userContent")
           div(class="input-group")
             span(class="input-group-addon") Endtag
             input(type="text" class="datePicker" name="enddate", class="form-control", placeholder="Enddatum")
-          div(class="input-group")
-            input(type='radio' value="Wl" name="wants")
-            lable Wachleiter?
-          div(class="input-group")
-            input(type='radio' value="Bf" name="wants")
-            lable Bootsführer?
-          div(class="input-group")
-            input(required type='radio' name="wants" value="Wg")
-            lable Wachgänger?
+          -if(user.isWl){
+            div(class="input-group")
+              input(type='radio' value="Wl" name="wants")
+              lable Wachleiter?          
+          -}
+          -if(user.isBf){
+            div(class="input-group")
+              input(type='radio' value="Bf" name="wants")
+              lable Bootsführer?
+          -}
+          -if(user.state=="isWg"){
+            div(class="input-group")
+              input(required type='radio' name="wants" value="Wg")
+              lable Wachgänger?
+          -}
           div(class="input-group")
             input(required type='radio' name="wants" value="Wh")
             lable Wachhelfer?
+            -console.log(user.isWl);
           div(class="input-group")
             input(type="submit" value="Anmelden", class="btn btn-success")
         include downloadWachplan.pug
