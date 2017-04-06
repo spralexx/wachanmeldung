@@ -210,7 +210,11 @@ app.get('/wachplandownload',
                 data.forEach(function(current, index) {
                     dataArray.push({
                         "id": index + 1,
-                        "startdate": current.date,
+                        "startdate": function(date) {
+                            var d = new Date();
+                            d.setDate(date.getDate() - 1);
+                            return d
+                        }(current.date),
                         "wl": current.team.wl.name,
                         "bf": current.team.bf.name,
                         "wg0": current.team.wg0.name,
