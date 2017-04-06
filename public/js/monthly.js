@@ -230,17 +230,45 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                         if (!fullendDate && startMonth == setMonth && startYear == setYear) {
                             // Add Indicators
                             $('#' + uniqueId + ' *[data-number="' + startDay +
-														 '"] .monthly-indicator-wrap').append('<div class="monthly-event-indicator"  data-eventid="' +
-														  eventId + '" style="background:' + eventColor +
-															 '" title="' + eventTitle + '">' + eventTitle +
-															  '<div class="wachleiter">WL:' + eventWl + '</div>' +
+														 '"]').append('<div class="panel panel-primary wachtag"  data-eventid="' +
+														  eventId + '"><div class="panel-heading"><h3 class="panel-title">'+ eventTitle +'</h3></div>'+ '<div class="panel-body">' +
+                              '<table class="table">'+
+                                '<thead><tr>'+
+                                  '<th>Position</th>'+
+                                  '<th>Name</th>'+
+                                '</tr>'+
+                                '</tbody><tbody>'+
+                                  '<tr>'+
+                                    '<td>WL</td>'+
+                                    '<td>'+ (eventWl==null ? "":eventWl)+'</td>'+
+                                  '</tr>'+
+                                  '<tr>'+
+                                    '<td>BF</td>'+
+                                    '<td>'+(eventBf==null ? "":eventBf)+'</td>'+
+                                  '</tr>'+
+                                  '<tr>'+
+                                    '<td>WG</td>'+
+                                    '<td>'+(eventWg0==null ? "":eventWg0)+'</td>'+
+                                  '</tr>'+
+                                  '<tr>'+
+                                    '<td>WH</td>'+
+                                    '<td>'+(eventWh0==null ? "":eventWh0)+'</td>'+
+                                  '</tr>'+
+                                  '<tr>'+
+                                    '<td>WH</td>'+
+                                    '<td>'+(eventWh1==null ? "":eventWh1)+'</td>'+
+                                  '</tr>'+
+                                '</tbody>'+
+                  '</table>'+
+                                /*
+                                '<div class="wachleiter">WL:' + eventWl + '</div>' +
 																 '<div class="bootsfuehrer">BF:' + eventBf + '</div>' +
 																  '<div class="wachgaenger">WG:' + eventWg0 + '</div>' +
-//																	 '<div class="wachgaenger">WG:' + eventWg1 +
-//																	  '</div>' +
 																		 '<div class="wachhelfer">WH:' +
 																		 eventWh0 + '</div>' + '<div class="wachhelfer">WH:' +
-																		  eventWh1 + '</div>' + '</div>');
+																		  eventWh1 + '</div>' +
+                                */
+                                       '</div>'+ '</div>');
                             // Print out event list for single day event
                             var timeHtml = '';
                             if (startTime) {

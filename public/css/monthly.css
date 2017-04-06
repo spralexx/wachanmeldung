@@ -8,30 +8,25 @@
 	user-select: none;
 	position: relative;
 }
-
-.wachleiter{
-	background-color: green;
-	color:white;
-	height: auto;
+.wachtag{
+	margin:0.25em;
+	margin-top: 0px;
 }
 
-.bootsfuehrer{
-	background-color: orange;
-	color:white;
-	height: auto;
+.wachtag table{
+	margin-bottom: 0px;
+}
+.wachtag .panel-body,.wachtag .panel-heading{
+	padding:0px;
+}
+.wachtag table tbody tr{
 
 }
-.wachgaenger{
-	background-color: darkgray;
-	color:white;
-	height: auto;
+.wachtag table tbody tr th,.wachtag table tbody tr td,.wachtag table thead tr th,.wachtag table thead tr td{
+	padding:0px;
+	border-bottom: none;
+	line-height: 1;
 }
-.wachhelfer{
-	background-color: white;
-	color:black;
-	height: auto;
-}
-
 /* Top bar containing title, navigation, and buttons */
 .monthly-header {
 	position: relative;
