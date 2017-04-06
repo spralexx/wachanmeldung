@@ -20,14 +20,14 @@ section(id="userContent")
       article(id="freeDays")
         h3 Abmelden
         form(action="/freeDays" method="post" id="freeForm")
-        div(class="input-group")
-          span(class="input-group-addon") Starttag
-          input(type="text" class="datePicker" name="startdate", class="form-control")
-        div(class="input-group")
-          span(class="input-group-addon") Endttag
-          input(type="text" class="datePicker" name="enddate", class="form-control")
-        div(class="input-group")
-          input(type="submit" value="Zeitraum freigeben", class="btn btn-success")
+          div(class="input-group")
+            span(class="input-group-addon") Starttag
+            input(type="text" class="datePicker" name="startdate", class="form-control")
+          div(class="input-group")
+            span(class="input-group-addon") Endttag
+            input(type="text" class="datePicker" name="enddate", class="form-control")
+          div(class="input-group")
+            input(type="submit" value="Zeitraum freigeben", class="btn btn-success")
       article(id="listFreeDays")
         table
           p Zum Tausch freigegeben
