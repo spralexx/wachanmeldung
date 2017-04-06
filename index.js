@@ -9,11 +9,12 @@ var bodyParser = require('body-parser');
 var passwordjs = require('./helpers/password')
 var mongoose = require('mongoose');
 var wachplanjs = require("./helpers/wachplan")
+var json2csv = require('json2csv');
 var initState = true;
 
 var LocalUserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-//    email: String,
+    //    email: String,
     name: String,
     isadmin: Boolean,
     isWl: Boolean,
@@ -129,12 +130,17 @@ app.get('/',
             //debugLog(new Date());
             switch (req.user.isadmin) {
                 case true:
-                    res.render("admin",{ pretty: true });
+                    res.render("admin", {
+                        pretty: true
+                    });
                     break;
                 default:
                     wachplanjs.getFreePositions(function(freeDays) {
                         debugLog("freeDays: " + freeDays)
-                        res.render("user", {freeDays, pretty: true });
+                        res.render("user", {
+                            freeDays,
+                            pretty: true
+                        });
                     })
             }
         } else {
@@ -177,7 +183,7 @@ app.get('/wachplandata',
                         "wl": current.team.wl.name,
                         "bf": current.team.bf.name,
                         "wg0": current.team.wg0.name,
-//                        "wg1": current.team.wg1.name,
+                        //                        "wg1": current.team.wg1.name,
                         "wh0": current.team.wh0.name,
                         "wh1": current.team.wh1.name
                     })
@@ -188,6 +194,48 @@ app.get('/wachplandata',
                     }
                     //debugLog(dataJson);
                 res.send(dataJson);
+            });
+        } else {
+            res.redirect("/login");
+        };
+    });
+
+app.get('/wachplandownload',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            var now = new Date();
+
+            var wachplandata = wachplanjs.getWachplanData(now.getFullYear(), function(data) {
+                var dataArray = new Array();
+                data.forEach(function(current, index) {
+                    dataArray.push({
+                        "id": index + 1,
+                        "startdate": current.date,
+                        "wl": current.team.wl.name,
+                        "bf": current.team.bf.name,
+                        "wg0": current.team.wg0.name,
+                        //                        "wg1": current.team.wg1.name,
+                        "wh0": current.team.wh0.name,
+                        "wh1": current.team.wh1.name
+                    })
+                })
+                dataJson = JSON.stringify(dataArray);
+                var fields = ['id', 'startdate', 'wl', 'bf', 'wg0', 'wh0', 'wh1'];
+
+                try {
+                    var result = json2csv({
+                        data: dataArray,
+                        del: ";"
+                    });
+                    console.log(result);
+                    res.send(result);
+                } catch (err) {
+                    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+                    // Be sure to provide fields if it is possible that your data array will be empty.
+                    res.send(err);
+                }
+                //debugLog(dataJson);
+
             });
         } else {
             res.redirect("/login");
@@ -289,7 +337,7 @@ app.post('/register',
                 var state;
                 if (initState) {
                     dbconn.collection("userInfo").insert({
-//                        'email': req.body.email,
+                        //                        'email': req.body.email,
                         'name': username,
                         'isadmin': true,
                         'isWl': (req.body.isWl == "on") ? true : false,
@@ -301,7 +349,7 @@ app.post('/register',
                     initState = false;
                 } else {
                     dbconn.collection("userInfo").insert({
-//                        'email': req.body.email,
+                        //                        'email': req.body.email,
                         'name': username,
                         'isadmin': false,
                         'isWl': (req.body.isWl == "on") ? true : false,
