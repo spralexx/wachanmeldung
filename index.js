@@ -212,7 +212,7 @@ app.get('/wachplandownload',
                         "id": index + 1,
                         "startdate": function(date) {
                             var d = new Date();
-                            d.setDate(date.getDate() - 1);
+                            d.setDate(date.getDate() - 2);
                             return d
                         }(current.date),
                         "wl": current.team.wl.name,
