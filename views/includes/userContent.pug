@@ -29,26 +29,33 @@ section(id="userContent")
           div(class="input-group")
             input(type="submit" value="Zeitraum freigeben", class="btn btn-success")
       article(id="listFreeDays")
-        table
-          p Zum Tausch freigegeben
-          tr
-            th Datum
-            th Position
-          -
-          -var month = new Array();
-          -month[0] = "Jan";
-          -month[1] = "Feb";
-          -month[2] = "Mär";
-          -month[3] = "Apr";
-          -month[4] = "Mai";
-          -month[5] = "Jun";
-          -month[6] = "Jul";
-          -month[7] = "Aug";
-          -month[8] = "Sep";
-          -month[9] = "Okt";
-          -month[10] = "Nov";
-          -month[11] = "Dez";
-          each item in freeDays
-            tr
-              td=item.date.getDate()-1+"."+month[item.date.getMonth()]+"."+item.date.getFullYear()
-              td=item.position
+        div(class="panel panel-danger")
+          div(class="panel-heading")
+            p Freigegebene Tage
+          div(class="panel-body")
+            table(class="table")
+              tr
+                th #
+                th Datum
+                th Position
+              -
+              -var month = new Array();
+              -month[0] = "Jan";
+              -month[1] = "Feb";
+              -month[2] = "Mär";
+              -month[3] = "Apr";
+              -month[4] = "Mai";
+              -month[5] = "Jun";
+              -month[6] = "Jul";
+              -month[7] = "Aug";
+              -month[8] = "Sep";
+              -month[9] = "Okt";
+              -month[10] = "Nov";
+              -month[11] = "Dez";
+              -var i=1;
+              tbody
+                each item in freeDays
+                  tr
+                    th=i++
+                    td=item.date.getDate()-1+". "+month[item.date.getMonth()]+". "+item.date.getFullYear()
+                    td=item.position

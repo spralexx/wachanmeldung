@@ -5,12 +5,12 @@ section(id="adminContent")
       article(id="createNewWache")
         h3  Wachtage anlegen
         form(action="/createwachtage" method="post")
-        div(class="input-group")
-          span(class="input-group-addon") Starttag
-          input(type="text" id="startdatepicker" name="startdate", class="form-control")
-        div(class="input-group")
-          span(class="input-group-addon") Endtag
-          input(type="text" id="enddatepicker" name="enddate", class="form-control")
-        div(class="input-group")
-          input(type="submit" value="Anlegen", class="btn btn-success")
+          div(class="input-group")
+            span(class="input-group-addon") Starttag
+            input(type="text" id="startdatepicker" name="startdate", class="form-control")
+          div(class="input-group")
+            span(class="input-group-addon") Endtag
+            input(type="text" id="enddatepicker" name="enddate", class="form-control")
+          div(class="input-group")
+            input(type="submit" value="Anlegen", class="btn btn-success")
         include logout.pug
