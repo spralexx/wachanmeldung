@@ -278,8 +278,9 @@ app.post('/applyforwache',
     function(req, res) {
         if (req.isAuthenticated()) {
             //process user application here
+            debugLog(req.body);
             if (req.body.startdate != "" && req.body.enddate != "") {
-                wachplanjs.applyUser(req.user, req.body.startdate, req.body.enddate);
+                wachplanjs.applyUser(req.user, req.body.wants, req.body.startdate, req.body.enddate);
             }
             res.redirect("/");
         } else {

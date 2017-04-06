@@ -90,7 +90,7 @@ function parseGermanDate(dateString) {
     return fulldate;
 }
 
-exports.applyUser = function(user, startdate, enddate) {
+exports.applyUser = function(user, wants, startdate, enddate) {
     startdate = parseGermanDate(startdate);
     enddate = parseGermanDate(enddate);
     var now = new Date();
@@ -102,7 +102,7 @@ exports.applyUser = function(user, startdate, enddate) {
             //console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
                 //console.log(current);
-                writeToDB1(user, current);
+                writeToDB1(user, wants, current);
             });
         }
     }
@@ -118,20 +118,20 @@ exports.getWachplanData = function(year, cb) {
     })
 }
 
-function writeToDB1(user, date) {
+function writeToDB1(user, wants, date) {
     var Wachtage = Wache.model("year" + String(date.getFullYear()), Wachtag, "year" + String(date.getFullYear()));
     console.log("date: " + date);
     Wachtage.findOne({
         'date': date
     }, function(err, dayToModify) {
       console.log("dayToModify: " + dayToModify+ err);
-        var dayToModify = prepareDbData(user, dayToModify);
+        var dayToModify = prepareDbData(user, wants, dayToModify);
         dayToModify.save();
     })
 
 }
 
-function prepareDbData(user, dayToModify) {
+function prepareDbData(user, wants, dayToModify) {
     for (var key in dayToModify.team) {
         try {
             if (user._id.toString() == dayToModify.team[key].userId.toString()) {
@@ -143,7 +143,7 @@ function prepareDbData(user, dayToModify) {
         }
     }
 
-    dayToModify.team.wl = (dayToModify.team.wl.name == null || dayToModify.team.wl.freeForChange) ? (function(user) {
+    dayToModify.team.wl = ((dayToModify.team.wl.name == null || dayToModify.team.wl.freeForChange)&& wants=="Wl") ? (function(user) {
         if (user.isWl) {
             return {
                 name: user.name,
@@ -160,7 +160,7 @@ function prepareDbData(user, dayToModify) {
     } catch (err) {
 
     }
-    dayToModify.team.bf = (dayToModify.team.bf.name == null || dayToModify.team.bf.freeForChange) ? (function(user) {
+    dayToModify.team.bf = ((dayToModify.team.bf.name == null || dayToModify.team.bf.freeForChange)&& wants=="Bf") ? (function(user) {
         if (user.isBf) {
             return {
                 name: user.name,
@@ -176,7 +176,7 @@ function prepareDbData(user, dayToModify) {
     } catch (err) {
 
     }
-    dayToModify.team.wg0 = (dayToModify.team.wg0.name == null || dayToModify.team.wg0.freeForChange) ? (function(user) {
+    dayToModify.team.wg0 = ((dayToModify.team.wg0.name == null || dayToModify.team.wg0.freeForChange)&& wants=="Wg") ? (function(user) {
         if (user.state == "isWg") {
             return {
                 name: user.name,
@@ -193,7 +193,7 @@ function prepareDbData(user, dayToModify) {
 
     }
     /*
-    dayToModify.team.wg1 = (dayToModify.team.wg1.name == null || dayToModify.team.wg1.freeForChange) ? (function(user) {
+    dayToModify.team.wg1 = ((dayToModify.team.wg1.name == null || dayToModify.team.wg1.freeForChange)&& wants=="Wg") ? (function(user) {
         if (user.state == "isWg") {
             return {
                 name: user.name,
@@ -210,7 +210,7 @@ function prepareDbData(user, dayToModify) {
 
     }
     */
-    dayToModify.team.wh0 = (dayToModify.team.wh0.name == null || dayToModify.team.wh0.freeForChange) ? {
+    dayToModify.team.wh0 = ((dayToModify.team.wh0.name == null || dayToModify.team.wh0.freeForChange)&& wants=="Wh") ? {
         name: user.name,
         userId: user._id,
         freeForChange: false
@@ -220,7 +220,7 @@ function prepareDbData(user, dayToModify) {
     } catch (err) {
 
     }
-    dayToModify.team.wh1 = (dayToModify.team.wh1.name == null || dayToModify.team.wh1.freeForChange) ? {
+    dayToModify.team.wh1 = ((dayToModify.team.wh1.name == null || dayToModify.team.wh1.freeForChange)&& wants=="Wh") ? {
         name: user.name,
         userId: user._id,
         freeForChange: false
