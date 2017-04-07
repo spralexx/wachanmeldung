@@ -13,12 +13,12 @@ section(id="userContent")
             input(type="text" class="datePicker" name="enddate", class="form-control", placeholder="Enddatum")
           -if(user.isWl){
             div(class="input-group")
-              input(type='radio' value="Wl" name="wants")
+              input(required type='radio' value="Wl" name="wants")
               lable Wachleiter?          
           -}
           -if(user.isBf){
             div(class="input-group")
-              input(type='radio' value="Bf" name="wants")
+              input(required type='radio' value="Bf" name="wants")
               lable Bootsführer?
           -}
           -if(user.state=="isWg"){
