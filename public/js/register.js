@@ -2,6 +2,9 @@
 $(function() {
   // Initialize form validation on the registration form.
   // It has the name attribute "registration"
+  $("#username").on("focus", function(){
+      $("#taken").text("");
+    });
   $("form[id='registerForm']").validate({
     // Specify validation rules
     rules: {

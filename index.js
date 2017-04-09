@@ -317,7 +317,7 @@ app.post('/register',
             res.redirect("/register");
             return;
         }
-        debugLog(req.body);
+        //debugLog(req.body);
         //register user here
         var username = req.body.username;
         debugLog("new registering: " + username);
@@ -330,6 +330,12 @@ app.post('/register',
             }
             if (user) {
                 debugLog("User already exists!!")
+                var taken = "Der Benutzer exisitert bereits.";
+                res.render('register', {
+                    taken,
+                    isNotLoggedin: true,
+                    pretty: true
+                });
                 return;
             }
             passwordjs.hash(req.body.password, function(err, hash, salt) {

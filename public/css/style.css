@@ -8,6 +8,9 @@ html {
   margin-top: 0;
   margin-bottom: 3em;
 }
+#password-error{
+  display:inherit;
+}
 .footer {
   position: absolute;
   bottom: 0;
