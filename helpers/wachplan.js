@@ -112,11 +112,16 @@ exports.applyUser = function(user, wants, startdate, enddate) {
                 writeToDB1(user, wants, current);
             });
         }
-        console.log(startdate);
-        console.log(enddate);
-        if(startdate.getTime()==enddate.getTime() || (enddate=="" && startdate!="")){
+        //console.log(startdate);
+        //console.log(enddate);
+        try{
+          var endtime=enddate.getTime();
+        }catch(err){
+          endtime=""
+        }
+        if(startdate.getTime()==endtime || (enddate=="" && startdate!="")){
           var dateArray = getDates(startdate, startdate);
-          console.log("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu!!");
+          //console.log("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu!!");
           //console.log("dateArray: " + dateArray);
           dateArray.forEach(function(current) {
               //console.log(current);
@@ -144,9 +149,14 @@ function writeToDB1(user, wants, date) {
     Wachtage.findOne({
         'date': date
     }, function(err, dayToModify) {
-      console.log("dayToModify: " + dayToModify+ err);
+      //console.log("dayToModify: " + dayToModify+ err);
+      if(dayToModify==null){
+        console.log("dieser Tag exisitiert nicht.");
+      }else{
         var dayToModify = prepareDbData(user, wants, dayToModify);
         dayToModify.save();
+
+      }
     })
 
 }
