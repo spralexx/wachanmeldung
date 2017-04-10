@@ -137,7 +137,7 @@ app.get('/',
                 default:
                     wachplanjs.getFreePositions(function(freeDays) {
                         debugLog("freeDays: " + freeDays)
-                        var user=req.user;
+                        var user = req.user;
                         res.render("user", {
                             freeDays,
                             user,
@@ -280,10 +280,13 @@ app.post('/applyforwache',
     function(req, res) {
         if (req.isAuthenticated()) {
             //process user application here
-            debugLog(req.body);
+            //debugLog(req.body);
+            /*
             if (req.body.startdate != "" && req.body.enddate != "") {
                 wachplanjs.applyUser(req.user, req.body.wants, req.body.startdate, req.body.enddate);
             }
+*/
+            wachplanjs.applyUser(req.user, req.body.wants, req.body.startdate, req.body.enddate);
             res.redirect("/");
         } else {
             res.redirect("/login");

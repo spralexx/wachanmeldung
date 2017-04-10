@@ -91,13 +91,20 @@ function parseGermanDate(dateString) {
 }
 
 exports.applyUser = function(user, wants, startdate, enddate) {
+  try{
     startdate = parseGermanDate(startdate);
     enddate = parseGermanDate(enddate);
+
+
+  }catch(err){
+
+  }
     var now = new Date();
-    if (startdate < now || enddate < now) {
-        console.log("Das Datum liegt in der Vergangenheit!");
+    if (startdate < now || (enddate < now&&enddate!="")) {
+        console.log("Das Datum ist nicht gültig!");
     } else {
         if (startdate < enddate) {
+          //console.log(enddate=="");
             var dateArray = getDates(startdate, enddate);
             //console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
@@ -105,7 +112,20 @@ exports.applyUser = function(user, wants, startdate, enddate) {
                 writeToDB1(user, wants, current);
             });
         }
+        console.log(startdate);
+        console.log(enddate);
+        if(startdate.getTime()==enddate.getTime() || (enddate=="" && startdate!="")){
+          var dateArray = getDates(startdate, startdate);
+          console.log("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu!!");
+          //console.log("dateArray: " + dateArray);
+          dateArray.forEach(function(current) {
+              //console.log(current);
+              writeToDB1(user, wants, current);
+          });
+
+        }
     }
+
 }
 
 exports.getWachplanData = function(year, cb) {
