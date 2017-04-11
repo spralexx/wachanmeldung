@@ -322,7 +322,7 @@ app.post('/register',
         }
         //debugLog(req.body);
         //register user here
-        var username = req.body.username;
+        var username = req.body.username.trim();
         debugLog("new registering: " + username);
         Users.findOne({
             'name': username
