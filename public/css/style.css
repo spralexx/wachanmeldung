@@ -86,7 +86,8 @@ html {
   #adminContent, #applicationForm, #freeDasyForm {
     float:none!important;
     text-align: center;
-    display: inline-grid;
+    display: inline-block;
+    vertical-align: top;
   }
 #applicationForm{
     margin-left: 25%;
