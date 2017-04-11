@@ -82,12 +82,24 @@ exports.createWachtag = function(date1, date2) {
 }
 
 function parseGermanDate(dateString) {
+  try{
     var dayString = dateString.split(" ")[0];
     var monthString = dateString.split(" ")[1].split(",")[0];
     var yearString = dateString.split(" ")[2];
     //Date.parse(dateString, "yyyy-MM-dd HH:mm:ss");
     var fulldate = new Date(dayString + " " + monthNamesDe[monthString] + ", " + yearString);
     return fulldate;
+  }catch(err){
+    try{
+      var parts = dateString.match(/(\d+)/g);
+      // note parts[1]-1
+      return new Date(parts[2], parts[1]-1, parts[0]);
+    }catch(err){
+      //we fucked up
+      return null
+    }
+
+  }
 }
 
 exports.applyUser = function(user, wants, startdate, enddate) {
