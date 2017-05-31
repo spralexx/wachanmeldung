@@ -30,6 +30,9 @@ html {
 #logoutbutton{
   margin-bottom: 3em;
 }
+#changepwbutton{
+  margin-top:1em;
+}
 .limitTo20em{
   width:20em;
 }

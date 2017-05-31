@@ -150,6 +150,120 @@ app.get('/',
 
         }
     });
+app.get('/changepw',
+    function(req, res) {
+        if (req.isAuthenticated()) {
+            //debugLog(new Date());
+            switch (req.user.isadmin) {
+                case true:
+                    res.render("changepassword", {
+                        pretty: true,
+                        isadmin: true
+                    });
+                    break;
+                default:
+                    res.render("changepassword", {
+                        pretty: true,
+                        isadmin: false
+                    });
+            }
+        } else {
+            res.redirect("/login");
+
+        }
+    });
+
+app.post('/changepw',
+    function(req, res) {
+        try {
+            if (req.isAuthenticated() && req.user.isadmin) { //admin can change other pws
+                if (req.body.newpw0 == req.body.newpw1) {
+                    Users.findOne({
+                        'name': req.body.username
+                    }, function(err, user) {
+                        if (err) {
+                            debugLog(err);
+                            return;
+                        }
+                        passwordjs.hash(req.body.newpw0, function(err, hash, salt) {
+                            if (err) {
+                                debugLog(err);
+                                return;
+                            }
+                            user.password = hash;
+                            user.salt = salt;
+                            user.save();
+                            res.render("notification", {
+                                pretty: true,
+                                msg: "Passwort erfolgreich geändert."
+                            });
+                            return;
+                        });
+                    });
+                } else {
+                    res.render("notification", {
+                        pretty: true,
+                        msg: "Die Passwörter stimmen nicht überein."
+                    });
+                    return;
+                }
+            } else if (req.isAuthenticated()) { //user changes own pw
+                if (req.body.newpw0 != req.body.newpw1) {
+                    res.render("notification", {
+                        pretty: true,
+                        msg: "Die Passwörter stimmen nicht überein."
+                    });
+                    return;
+                } else {
+                    Users.findOne({
+                        'name': req.user.name
+                    }, function(err, user) {
+                        if (err) {
+                            debugLog(err);
+                            return;
+                        }
+                        debugLog(user);
+                        passwordjs.hash(req.body.oldpw, user.salt, function(err, hash) { //get hash for old pw to compare it ith hash stored in db
+                            if (err) {
+                                debugLog(err);
+                                return;
+                            }
+                            if (hash == user.password) { //if oldpw hash equals db pwhash we can change pw
+                                passwordjs.hash(req.body.newpw0, function(err, hash, salt) {
+                                    if (err) {
+                                        debugLog(err);
+                                        return;
+                                    }
+                                    user.password = hash;
+                                    user.salt = salt;
+                                    user.save();
+
+                                    res.render("notification", {
+                                        pretty: true,
+                                        msg: "Passwort erfolgreich geändert."
+                                    });
+                                });
+                            } else {
+                                res.render("notification", {
+                                    pretty: true,
+                                    msg: "Dein altes Passwort stimmt nicht."
+                                });
+                                return;
+
+                            }
+                        });
+                    });
+                }
+            }
+
+        } catch (err) {
+            res.render("notification", {
+                pretty: true,
+                msg: err
+            });
+
+        }
+    });
 
 app.get('/returnFreeDays',
     function(req, res) {
