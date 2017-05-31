@@ -401,7 +401,11 @@ app.post('/applyforwache',
             }
 */
             wachplanjs.applyUser(req.user, req.body.wants, req.body.startdate, req.body.enddate);
-            res.redirect("/");
+            res.render("notification", {
+                pretty: true,
+                msg: "Deine Anmeldung wurde entgegen genommen."
+            });
+            return;
         } else {
             res.redirect("/login");
         };
@@ -413,7 +417,11 @@ app.post('/freeDays',
             if (req.body.startdate != "" && req.body.enddate != "") {
                 wachplanjs.freeDays(req.user, req.body.startdate, req.body.enddate)
             }
-            res.redirect("/");
+            res.render("notification", {
+                pretty: true,
+                msg: "Dein Anfrage wurde entgegen genommen."
+            });
+            return;
         } else {
             res.redirect("/login");
         };
