@@ -414,9 +414,13 @@ app.post('/applyforwache',
 app.post('/freeDays',
     function(req, res) {
         if (req.isAuthenticated()) {
+/*
             if (req.body.startdate != "" && req.body.enddate != "") {
                 wachplanjs.freeDays(req.user, req.body.startdate, req.body.enddate)
             }
+*/
+            wachplanjs.freeDays(req.user, req.body.startdate, req.body.enddate)
+
             res.render("notification", {
                 pretty: true,
                 msg: "Dein Anfrage wurde entgegen genommen."

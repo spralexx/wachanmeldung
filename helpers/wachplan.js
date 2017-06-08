@@ -347,19 +347,34 @@ exports.getFreePositions = function(cb) {
 }
 
 exports.freeDays = function(user, startdate, enddate) {
+  try{
     startdate = parseGermanDate(startdate);
     enddate = parseGermanDate(enddate);
+
+
+  }catch(err){
+    console.log("date parsing error!: "+err);
+
+  }
     var now = new Date();
-    if (startdate < now || enddate < now) {
-        console.log("Das Datum liegt in der Vergangenheit!");
+    if (startdate < now || (enddate < now&&enddate!=null)) {
+        console.log("Das Datum ist nicht gültig");
     } else {
-        if (startdate < enddate) {
+        if (startdate <= enddate && enddate!=null) {
             var dateArray = getDates(startdate, enddate);
             //console.log("dateArray: " + dateArray);
             dateArray.forEach(function(current) {
-                //console.log(current);
+                console.log(current);
                 writeToDB2(user, current);
             });
+        }
+        if(startdate !="" && enddate==null){
+          var dateArray = getDates(startdate, startdate);
+          //console.log("dateArray: " + dateArray);
+          dateArray.forEach(function(current) {
+              console.log(current);
+              writeToDB2(user, current);
+          });
         }
     }
 }
