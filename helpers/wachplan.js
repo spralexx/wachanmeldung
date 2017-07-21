@@ -323,6 +323,7 @@ exports.getFreePositions = function(cb) {
     exports.getWachplanData(now.getFullYear(), function(allDays) {
         var freeDays = new Array();
         allDays.forEach(function(current, index) {
+          if(current.date>=now){
             //check if there are freeed positions on this Date
             for (var key in current.team) {
                 try {
@@ -338,6 +339,7 @@ exports.getFreePositions = function(cb) {
 
                 }
             }
+          }
         })
         console.log(freeDays);
         cb(freeDays);
