@@ -1,15 +1,17 @@
-var express = require('express');
-var session = require('express-session');
-var flash = require('connect-flash');
-var app = express();
+const express = require('express');
+const session = require('express-session');
+const flash = require('connect-flash');
+const app = express();
 const port = 3000; //port to listen on
-var debugMode = 1; //boolean to enable debugmode
+const debugMode = 1; //boolean to enable debugmode
 debugLog("debuglog Enabled");
-var bodyParser = require('body-parser');
-var passwordjs = require('./helpers/password')
-var mongoose = require('mongoose');
-var wachplanjs = require("./helpers/wachplan")
-var json2csv = require('json2csv');
+const bodyParser = require('body-parser');
+const passwordjs = require('./helpers/password')
+const mongoose = require('mongoose');
+const wachplanjs = require("./helpers/wachplan")
+const json2csv = require('json2csv');
+const MongoStore = require('connect-mongo')(session);
+
 var initState = true;
 
 var LocalUserSchema = new mongoose.Schema({
@@ -51,7 +53,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
     Users.findOne({
         'name': username
     }, function(err, user) {
-        console.log(user);
+        //console.log(user);
         if (err) {
             debugLog("Error: " + err);
             return done(err);
@@ -103,19 +105,26 @@ passport.deserializeUser(function(id, cb) {
         cb(null, user);
     });
 });
+
+
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use(flash());
 app.use(bodyParser());
-app.use(session({
+var sessionStore = new MongoStore({
+    mongooseConnection: dbconn
+  });
+  var sess = {
+    store: sessionStore,
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false,
-        maxAge: 3600000
+      secure: false,
+      maxAge: 3600000
     }
-}));
+  }
+  app.use(session(sess));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
@@ -458,7 +467,7 @@ app.post('/register',
                 return;
             }
             if (user) {
-                debugLog("User already exists!!")
+                debugLog("User already exists!!");
                 var taken = "Der Benutzer exisitert bereits.";
                 res.render('register', {
                     taken,
