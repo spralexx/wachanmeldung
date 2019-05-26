@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const wachplanjs = require("./helpers/wachplan")
 const json2csv = require('json2csv');
 const MongoStore = require('connect-mongo')(session);
+const IBAN = require('iban');
 
 var initState = true;
 
@@ -18,6 +19,7 @@ var LocalUserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     //    email: String,
     name: String,
+    iban: String,
     isadmin: Boolean,
     isWl: Boolean,
     isBf: Boolean,
@@ -450,7 +452,7 @@ app.post('/login',
 
 app.post('/register',
     function(req, res) {
-        if (req.body.username == "" || req.body.password == "" || req.body.state == "") {
+        if (req.body.username == "" || req.body.password == "" || req.body.state == "" || !IBAN.isValid(req.body.iban)) {
             //debugLog(req.body);
             res.redirect("/register");
             return;
@@ -487,6 +489,7 @@ app.post('/register',
                         //                        'email': req.body.email,
                         'name': username,
                         'isadmin': true,
+                        'iban': req.body.iban,
                         'isWl': (req.body.isWl == "on") ? true : false,
                         'isBf': (req.body.isBf == "on") ? true : false,
                         'state': (req.body.isWl == "on" || req.body.isBf == "on") ? "isWg" : req.body.state,
@@ -499,6 +502,7 @@ app.post('/register',
                         //                        'email': req.body.email,
                         'name': username,
                         'isadmin': false,
+                        'iban': req.body.iban,
                         'isWl': (req.body.isWl == "on") ? true : false,
                         'isBf': (req.body.isBf == "on") ? true : false,
                         'state': (req.body.isWl == "on" || req.body.isBf == "on") ? "isWg" : req.body.state,
