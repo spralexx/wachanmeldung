@@ -5,9 +5,9 @@ block body
   script(src="js/register.js")
   div(class="container")
     h1 Registrieren
+    p(id="taken")= taken
     form(id ="registerForm" action="/register" method="post")
       div(class="input-group")
-        lable(style="display:inherit;", id="taken")= taken
         input(required type='text' id="username" name="username" placeholder="Benutzername", class="form-control")
       div(class="input-group")
         input(required type='password' id="password" name="password", class="form-control", placeholder="Passwort")
