@@ -454,6 +454,15 @@ app.post('/register',
     function(req, res) {
         if (req.body.username == "" || req.body.password == "" || req.body.state == "" || !IBAN.isValid(req.body.iban)) {
             //debugLog(req.body);
+            if (!IBAN.isValid(req.body.iban)) {
+                let taken = "Die eingegebene IBAN ist ungültig"
+                res.render('register', {
+                  taken,
+                  isNotLoggedin: true,
+                  pretty: true
+                });
+                return;
+            }
             res.redirect("/register");
             return;
         }
