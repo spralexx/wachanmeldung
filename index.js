@@ -310,7 +310,8 @@ app.get('/wachplandata',
                         "wl": current.team.wl.name,
                         "bf": current.team.bf.name,
                         "wg0": current.team.wg0.name,
-                        //                        "wg1": current.team.wg1.name,
+                        "wg1": current.team.wg1.name,
+                        "wg2": current.team.wg2.name,
                         "wh0": current.team.wh0.name,
                         "wh1": current.team.wh1.name
                     })
@@ -341,13 +342,14 @@ app.get('/wachplandownload',
                         "wl": current.team.wl.name,
                         "bf": current.team.bf.name,
                         "wg0": current.team.wg0.name,
-                        //                        "wg1": current.team.wg1.name,
+                        "wg1": current.team.wg1.name,
+                        "wg2": current.team.wg2.name,
                         "wh0": current.team.wh0.name,
                         "wh1": current.team.wh1.name
                     })
                 })
                 dataJson = JSON.stringify(dataArray);
-                var fields = ['id', 'startdate', 'wl', 'bf', 'wg0', 'wh0', 'wh1'];
+                var fields = ['id', 'startdate', 'wl', 'bf', 'wg0','wg1','wg2', 'wh0', 'wh1'];
 
                 try {
                     var result = json2csv({
