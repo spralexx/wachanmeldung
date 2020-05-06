@@ -177,7 +177,8 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                             eventWl = options.dataType == 'xml' ? $(event).find('wl').text() : event.wl,
                             eventBf = options.dataType == 'xml' ? $(event).find('bf').text() : event.bf,
                             eventWg0 = options.dataType == 'xml' ? $(event).find('wg0').text() : event.wg0,
-                            //						eventWg1 = options.dataType == 'xml' ? $(event).find('wg1').text() : event.wg1,
+                            eventWg1 = options.dataType == 'xml' ? $(event).find('wg1').text() : event.wg1,
+                            eventWg2 = options.dataType == 'xml' ? $(event).find('wg2').text() : event.wg2,
                             eventWh0 = options.dataType == 'xml' ? $(event).find('wh0').text() : event.wh0,
                             eventWh1 = options.dataType == 'xml' ? $(event).find('wh1').text() : event.wh1,
                             eventColor = options.dataType == 'xml' ? $(event).find('color').text() : event.color,
@@ -250,7 +251,17 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                                     '<td>WG</td>'+
                                     '<td>'+(eventWg0==null ? "":eventWg0)+'</td>'+
                                   '</tr>'+
-                                  '<tr>'+
+                                                         '<tr>' +
+                                                         '<td>WG</td>' +
+                                                         '<td>' + (eventWg1 == null ? "" : eventWg1) + '</td>' +
+                                                         '</tr>' +
+
+                                                         '<tr>' +
+                                                         '<td>WG</td>' +
+                                                         '<td>' + (eventWg2 == null ? "" : eventWg2) + '</td>' +
+                                                         '</tr>' +
+
+                                                         '<tr>'+
                                     '<td>WH</td>'+
                                     '<td>'+(eventWh0==null ? "":eventWh0)+'</td>'+
                                   '</tr>'+
