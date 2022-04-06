@@ -47,6 +47,11 @@ var Wachtag = new mongoose.Schema({
             userId: mongoose.Schema.Types.ObjectId,
             freeForChange: Boolean
         },
+        wg3: {
+            name: String,
+            userId: mongoose.Schema.Types.ObjectId,
+            freeForChange: Boolean
+        },
         wh0: {
             name: String,
             userId: mongoose.Schema.Types.ObjectId,
@@ -269,6 +274,22 @@ function prepareDbData(user, wants, dayToModify) {
     } catch (err) {
 
     }
+    dayToModify.team.wg3 = ((dayToModify.team.wg3.name == null || dayToModify.team.wg3.freeForChange) && wants == "Wg") ? (function (user) {
+        if (user.state == "isWg") {
+            return {
+                name: user.name,
+                userId: user._id,
+                freeForChange: false
+            };
+        } else {
+            return dayToModify.team.wg3
+        }
+    })(user) : dayToModify.team.wg3;
+    try {
+        if (dayToModify.team.wg3.userId == user._id) return dayToModify;
+    } catch (err) {
+
+    }
     dayToModify.team.wh0 = ((dayToModify.team.wh0.name == null || dayToModify.team.wh0.freeForChange) && wants == "Wh") ? {
         name: user.name,
         userId: user._id,
@@ -317,6 +338,11 @@ function writeToDB(date) {
                     freeForChange: null
                 },
                 wg2: {
+                    name: null,
+                    userId: null,
+                    freeForChange: null
+                },
+                wg3: {
                     name: null,
                     userId: null,
                     freeForChange: null

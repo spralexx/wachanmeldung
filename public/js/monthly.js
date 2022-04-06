@@ -2,9 +2,9 @@
 Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
 */
 
-(function($) {
+(function ($) {
     $.fn.extend({
-        monthly: function(options) {
+        monthly: function (options) {
             // These are overridden by options declared in footer
             var defaults = {
                 weekStart: 'Sun',
@@ -44,15 +44,15 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                     'position': 'absolute',
                     'display': 'none'
                 });
-                $(document).on('focus', '' + options.showTrigger + '', function(e) {
+                $(document).on('focus', '' + options.showTrigger + '', function (e) {
                     $('#' + uniqueId).show();
                     e.preventDefault();
                 });
-                $(document).on('click', '' + options.showTrigger + ', .monthly-pop', function(e) {
+                $(document).on('click', '' + options.showTrigger + ', .monthly-pop', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                 });
-                $(document).on('click', function(e) {
+                $(document).on('click', function (e) {
                     $('#' + uniqueId).hide();
                 });
             }
@@ -159,7 +159,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                     // Remove previous events
 
                     // Add Events
-                    var addEvents = function(event) {
+                    var addEvents = function (event) {
                         // Year [0]   Month [1]   Day [2]
 
                         var fullstartDate = options.dataType == 'xml' ? $(event).find('startdate').text() : event.startdate,
@@ -179,6 +179,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                             eventWg0 = options.dataType == 'xml' ? $(event).find('wg0').text() : event.wg0,
                             eventWg1 = options.dataType == 'xml' ? $(event).find('wg1').text() : event.wg1,
                             eventWg2 = options.dataType == 'xml' ? $(event).find('wg2').text() : event.wg2,
+                            eventWg3 = options.dataType == 'xml' ? $(event).find('wg3').text() : event.wg3,
                             eventWh0 = options.dataType == 'xml' ? $(event).find('wh0').text() : event.wh0,
                             eventWh1 = options.dataType == 'xml' ? $(event).find('wh1').text() : event.wh1,
                             eventColor = options.dataType == 'xml' ? $(event).find('color').text() : event.color,
@@ -231,55 +232,61 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
                         if (!fullendDate && startMonth == setMonth && startYear == setYear) {
                             // Add Indicators
                             $('#' + uniqueId + ' *[data-number="' + startDay +
-														 '"]').append('<div class="panel panel-primary wachtag"  data-eventid="' +
-														  eventId + '"><div class="panel-heading"><h3 class="panel-title">'+ eventTitle +'</h3></div>'+ '<div class="panel-body">' +
-                              '<table class="table">'+
-                                '<thead><tr>'+
-                                  '<th>Position</th>'+
-                                  '<th>Name</th>'+
-                                '</tr>'+
-                                '</tbody><tbody>'+
-                                  '<tr>'+
-                                    '<td>WL</td>'+
-                                    '<td>'+ (eventWl==null ? "":eventWl)+'</td>'+
-                                  '</tr>'+
-                                  '<tr>'+
-                                    '<td>BF</td>'+
-                                    '<td>'+(eventBf==null ? "":eventBf)+'</td>'+
-                                  '</tr>'+
-                                  '<tr>'+
-                                    '<td>WG</td>'+
-                                    '<td>'+(eventWg0==null ? "":eventWg0)+'</td>'+
-                                  '</tr>'+
-                                                         '<tr>' +
-                                                         '<td>WG</td>' +
-                                                         '<td>' + (eventWg1 == null ? "" : eventWg1) + '</td>' +
-                                                         '</tr>' +
+                                '"]').append('<div class="panel panel-primary wachtag"  data-eventid="' +
+                                    eventId + '"><div class="panel-heading"><h3 class="panel-title">' + eventTitle + '</h3></div>' + '<div class="panel-body">' +
+                                    '<table class="table">' +
+                                    '<thead><tr>' +
+                                    '<th>Position</th>' +
+                                    '<th>Name</th>' +
+                                    '</tr>' +
+                                    '</tbody><tbody>' +
+                                    '<tr>' +
+                                    '<td>WL</td>' +
+                                    '<td>' + (eventWl == null ? "" : eventWl) + '</td>' +
+                                    '</tr>' +
+                                    '<tr>' +
+                                    '<td>BF</td>' +
+                                    '<td>' + (eventBf == null ? "" : eventBf) + '</td>' +
+                                    '</tr>' +
+                                    '<tr>' +
+                                    '<td>WG</td>' +
+                                    '<td>' + (eventWg0 == null ? "" : eventWg0) + '</td>' +
+                                    '</tr>' +
+                                    
+                                    '<tr>' +
+                                    '<td>WG</td>' +
+                                    '<td>' + (eventWg1 == null ? "" : eventWg1) + '</td>' +
+                                    '</tr>' +
 
-                                                         '<tr>' +
-                                                         '<td>WG</td>' +
-                                                         '<td>' + (eventWg2 == null ? "" : eventWg2) + '</td>' +
-                                                         '</tr>' +
+                                    '<tr>' +
+                                    '<td>WG</td>' +
+                                    '<td>' + (eventWg2 == null ? "" : eventWg2) + '</td>' +
+                                    '</tr>' +
 
-                                                         '<tr>'+
-                                    '<td>WH</td>'+
-                                    '<td>'+(eventWh0==null ? "":eventWh0)+'</td>'+
-                                  '</tr>'+
-                                  '<tr>'+
-                                    '<td>WH</td>'+
-                                    '<td>'+(eventWh1==null ? "":eventWh1)+'</td>'+
-                                  '</tr>'+
-                                '</tbody>'+
-                  '</table>'+
-                                /*
-                                '<div class="wachleiter">WL:' + eventWl + '</div>' +
-																 '<div class="bootsfuehrer">BF:' + eventBf + '</div>' +
-																  '<div class="wachgaenger">WG:' + eventWg0 + '</div>' +
-																		 '<div class="wachhelfer">WH:' +
-																		 eventWh0 + '</div>' + '<div class="wachhelfer">WH:' +
-																		  eventWh1 + '</div>' +
-                                */
-                                       '</div>'+ '</div>');
+                                    '<tr>' +
+                                    '<td>WG</td>' +
+                                    '<td>' + (eventWg3 == null ? "" : eventWg3) + '</td>' +
+                                    '</tr>' +
+
+                                    '<tr>' +
+                                    '<td>WH</td>' +
+                                    '<td>' + (eventWh0 == null ? "" : eventWh0) + '</td>' +
+                                    '</tr>' +
+                                    '<tr>' +
+                                    '<td>WH</td>' +
+                                    '<td>' + (eventWh1 == null ? "" : eventWh1) + '</td>' +
+                                    '</tr>' +
+                                    '</tbody>' +
+                                    '</table>' +
+                                    /*
+                                    '<div class="wachleiter">WL:' + eventWl + '</div>' +
+                                                                     '<div class="bootsfuehrer">BF:' + eventBf + '</div>' +
+                                                                      '<div class="wachgaenger">WG:' + eventWg0 + '</div>' +
+                                                                             '<div class="wachhelfer">WH:' +
+                                                                             eventWh0 + '</div>' + '<div class="wachhelfer">WH:' +
+                                                                              eventWh1 + '</div>' +
+                                    */
+                                    '</div>' + '</div>');
                             // Print out event list for single day event
                             var timeHtml = '';
                             if (startTime) {
@@ -348,17 +355,17 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 
                     $.get('' + eventsResource + '', {
                         now: jQuery.now()
-                    }, function(d) {
+                    }, function (d) {
                         if (options.dataType == 'xml') {
-                            $(d).find('event').each(function(index, event) {
+                            $(d).find('event').each(function (index, event) {
                                 addEvents(event);
                             });
                         } else if (options.dataType == 'json') {
-                            $.each(d.monthly, function(index, event) {
+                            $.each(d.monthly, function (index, event) {
                                 addEvents(event);
                             });
                         }
-                    }, options.dataType).fail(function() {
+                    }, options.dataType).fail(function () {
                         console.error('Monthly.js failed to import ' + eventsResource + '. Please check for the correct path & ' + options.dataType + ' syntax.');
                     });
 
@@ -381,7 +388,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
             }
 
             // Advance months
-            $(document.body).on('click', '#' + uniqueId + ' .monthly-next', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' .monthly-next', function (e) {
                 var setMonth = $('#' + uniqueId).data('setMonth'),
                     setYear = $('#' + uniqueId).data('setYear');
                 if (setMonth == 12) {
@@ -398,7 +405,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
             });
 
             // Go back in months
-            $(document.body).on('click', '#' + uniqueId + ' .monthly-prev', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' .monthly-prev', function (e) {
                 var setMonth = $('#' + uniqueId).data('setMonth'),
                     setYear = $('#' + uniqueId).data('setYear');
                 if (setMonth == 1) {
@@ -415,7 +422,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
             });
 
             // Reset Month
-            $(document.body).on('click', '#' + uniqueId + ' .monthly-reset', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' .monthly-reset', function (e) {
                 $(this).remove();
                 setMonthly(currentMonth, currentYear);
                 viewToggleButton();
@@ -424,17 +431,17 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
             });
 
             // Back to month view
-            $(document.body).on('click', '#' + uniqueId + ' .monthly-cal', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' .monthly-cal', function (e) {
                 $(this).remove();
                 $('#' + uniqueId + ' .monthly-event-list').css('transform', 'scale(0)');
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#' + uniqueId + ' .monthly-event-list').hide();
                 }, 250);
                 e.preventDefault();
             });
 
             // Click A Day
-            $(document.body).on('click', '#' + uniqueId + ' a.monthly-day', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' a.monthly-day', function (e) {
                 // If events, show events list
                 if (options.mode == 'event' && options.eventList == true) {
                     var whichDay = $(this).data('number');
@@ -470,7 +477,7 @@ Monthly 2.1.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
             });
 
             // Clicking an event within the list
-            $(document.body).on('click', '#' + uniqueId + ' .listed-event', function(e) {
+            $(document.body).on('click', '#' + uniqueId + ' .listed-event', function (e) {
                 var href = $(this).attr('href');
                 // If there isn't a link, don't go anywhere
                 if (!href) {
