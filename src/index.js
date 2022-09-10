@@ -10,7 +10,7 @@ const passwordjs = require('./helpers/password')
 const mongoose = require('mongoose');
 const wachplanjs = require("./helpers/wachplan")
 const json2csv = require('json2csv');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const IBAN = require('iban');
 
 var initState = true;
@@ -27,7 +27,7 @@ var LocalUserSchema = new mongoose.Schema({
     password: String,
     salt: Buffer
 });
-var dbconn = mongoose.createConnection("mongodb://127.0.0.1/Users"),
+var dbconn = mongoose.createConnection("mongodb://db/Users"),
     Users = dbconn.model('userInfo', LocalUserSchema, 'userInfo');
 
 Users.findOne({
@@ -113,8 +113,8 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use(flash());
 app.use(bodyParser());
-var sessionStore = new MongoStore({
-    mongooseConnection: dbconn
+var sessionStore = MongoStore.create({
+    client: dbconn.getClient()
   });
   var sess = {
     store: sessionStore,
