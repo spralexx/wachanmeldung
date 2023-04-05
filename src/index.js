@@ -27,7 +27,7 @@ var LocalUserSchema = new mongoose.Schema({
     password: String,
     salt: Buffer
 });
-var dbconn = mongoose.createConnection("mongodb://db/Users"),
+var dbconn = mongoose.createConnection("mongodb://wachanmeldungdb/Users"),
     Users = dbconn.model('userInfo', LocalUserSchema, 'userInfo');
 
 Users.findOne({
