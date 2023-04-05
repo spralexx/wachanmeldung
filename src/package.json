@@ -25,7 +25,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "iban": "0.0.12",
-    "json2csv": "^3.7.3",
+    "json2csv": "^6.0.0-alpha.2",
     "mongodb": "^4.9.1",
     "mongoose": "^6.6.0",
     "npm": "^8.19.1",
