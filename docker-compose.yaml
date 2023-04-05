@@ -12,7 +12,7 @@ services:
 
   wachanmeldung:
     image: "node:latest"
-    user: "node"
+    user: "root"
     restart: always
     depends_on:
       - db
