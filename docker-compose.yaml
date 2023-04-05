@@ -5,10 +5,12 @@ services:
     restart: always
     volumes:
       - './mongo:/data/db'
-    expose: 
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports: 
       - "27017"
 
-  node:
+  wachanmeldung:
     image: "node:latest"
     user: "node"
     restart: always
@@ -17,6 +19,8 @@ services:
     working_dir: /home/node/app
     volumes:
       - ./src:/home/node/app
-    expose:
-      - "8081:3000"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "3000"
     command: "npm run prod"
