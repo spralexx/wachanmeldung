@@ -1,6 +1,6 @@
 version: "2"
 services:
-  db:
+  wachanmeldungdb:
     image: mongo
     restart: always
     volumes:
@@ -15,7 +15,7 @@ services:
     user: "root"
     restart: always
     depends_on:
-      - db
+      - wachanmeldungdb
     working_dir: /home/node/app
     volumes:
       - ./src:/home/node/app
