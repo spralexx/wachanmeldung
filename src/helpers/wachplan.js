@@ -69,7 +69,7 @@ var Wachtag = new mongoose.Schema({
     }
 });
 
-var Wache = mongoose.createConnection("mongodb://db/Wache");
+var Wache = mongoose.createConnection("mongodb://wachanmeldungdb/Wache");
 
 exports.createWachtag = function (date1, date2) {
     date1 = parseGermanDate(date1);
