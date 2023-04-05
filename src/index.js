@@ -386,14 +386,6 @@ app.get('/login',
     });
 
 
-app.get('/logout',
-    function(req, res) {
-        if (req.isAuthenticated()) {
-            req.logOut();
-        }
-        res.redirect("/login");
-    });
-
 app.post('/createwachtage',
     function(req, res) {
         if (req.isAuthenticated() && req.user.isadmin) {
@@ -542,9 +534,20 @@ app.get('/register',
     });
 app.get('/logout',
     function(req, res) {
-        req.logout();
-        res.redirect('/');
+        req.logout(function(err) {
+            if (err) { return next(err); }
+            res.redirect('/');
+          });
     });
+    
+app.post('/logout',
+    function(req, res) {
+        req.logout(function(err) {
+            if (err) { return next(err); }
+            res.redirect('/');
+          });
+    });
+    
 
 app.listen(port, function() {
     debugLog("Listening on Port: " + port);
