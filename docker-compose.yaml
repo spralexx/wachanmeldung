@@ -7,7 +7,7 @@ services:
       - './mongo:/data/db'
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-    ports: 
+    expose: 
       - "27017"
 
   wachanmeldung:
@@ -21,6 +21,6 @@ services:
       - ./src:/home/node/app
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-    ports:
+    expose:
       - "3000"
     command: "npm run prod"
