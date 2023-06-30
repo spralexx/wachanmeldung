@@ -28,7 +28,7 @@
     "json2csv": "^3.7.3",
     "mongodb": "^4.9.1",
     "mongoose": "^6.6.0",
-    "npm": "^8.19.1",
+    "npm": "^9.7.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pug": "^3.0.2"
